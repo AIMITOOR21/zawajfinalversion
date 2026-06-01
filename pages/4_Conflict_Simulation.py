@@ -24,7 +24,13 @@ def page_css():
     }
     .block-container { padding-top: 1.5rem; max-width: 1100px; }
     h1, h2, h3, h4 { font-family: 'Playfair Display', serif !important; color: #5C2A3E !important; }
-    p, div, span, label, .stMarkdown { font-family: 'Poppins', sans-serif; }
+
+    /* FORCE all text to be visible */
+    p, div, span, label, .stMarkdown, .stMarkdown p, .stMarkdown div {
+        font-family: 'Poppins', sans-serif;
+        color: #3E3E3E !important;
+        opacity: 1 !important;
+    }
 
     .page-header { text-align: center; padding: 1.5rem 0 0.5rem; animation: fadeIn 0.7s ease-out; }
     .page-title {
@@ -34,12 +40,13 @@ def page_css():
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         background-clip: text; margin: 0;
     }
-    .page-sub { color: #8A6B7A; font-style: italic; font-size: 1rem; margin-top: 0.3rem; }
+    .page-sub { color: #8A6B7A !important; font-style: italic; font-size: 1rem; margin-top: 0.3rem; }
     .divider-gold {
         width: 120px; height: 2px;
         background: linear-gradient(90deg, transparent, #C9A96E, transparent);
         margin: 1rem auto;
     }
+
     .conflict-card {
         background: white;
         border-radius: 14px;
@@ -48,7 +55,39 @@ def page_css():
         box-shadow: 0 3px 10px rgba(212,87,122,0.08);
         border-left: 4px solid #D4577A;
         animation: fadeIn 0.5s ease-out;
+        color: #3E3E3E;
     }
+    .conflict-card b, .conflict-card div, .conflict-card span {
+        color: #3E3E3E !important;
+        opacity: 1 !important;
+    }
+
+    /* Metric components — force visible */
+    [data-testid="stMetricLabel"], [data-testid="stMetricLabel"] p {
+        color: #5C2A3E !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+    }
+    [data-testid="stMetricValue"] {
+        color: #D4577A !important;
+        font-weight: 700 !important;
+        opacity: 1 !important;
+    }
+
+    /* Expander text visibility */
+    [data-testid="stExpander"] details summary,
+    [data-testid="stExpander"] details summary p,
+    [data-testid="stExpander"] summary p {
+        color: #5C2A3E !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
+    }
+    [data-testid="stExpander"] {
+        background: white !important;
+        border: 1px solid #F8D7DE !important;
+        border-radius: 12px !important;
+    }
+
     .stButton > button {
         border-radius: 24px !important;
         font-family: 'Poppins', sans-serif !important;
@@ -58,6 +97,20 @@ def page_css():
         color: white !important; border: none !important;
         box-shadow: 0 4px 12px rgba(212, 87, 122, 0.3) !important;
     }
+
+    /* AI output box */
+    .ai-output {
+        background: white;
+        border-radius: 14px;
+        padding: 1.2rem 1.4rem;
+        margin: 1rem 0;
+        border: 1.5px solid #F8D7DE;
+        color: #3E3E3E !important;
+        line-height: 1.6;
+    }
+    .ai-output * { color: #3E3E3E !important; opacity: 1 !important; }
+    .ai-output strong, .ai-output b { color: #5C2A3E !important; font-weight: 700 !important; }
+
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(10px); }
         to   { opacity: 1; transform: translateY(0); }
@@ -78,22 +131,6 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # Auto-load demo if needed
-    if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a"):
-        from config import DOMAIN_OPTIONS
-        demo_a = {d: opts[0] for d, opts in DOMAIN_OPTIONS.items()}
-        demo_a.update({"openness":0.8,"conscientiousness":0.6,"extraversion":0.5,
-                       "agreeableness":0.7,"neuroticism":0.3,"name":"Sara"})
-        demo_b = {d: opts[2] for d, opts in DOMAIN_OPTIONS.items()}
-        demo_b.update({"openness":0.4,"conscientiousness":0.7,"extraversion":0.6,
-                       "agreeableness":0.5,"neuroticism":0.4,"name":"Ahmed"})
-        st.session_state.person_a = demo_a
-        st.session_state.person_b = demo_b
-        st.session_state.person_a_name = "Sara"
-        st.session_state.person_b_name = "Ahmed"
-        st.session_state.assessment_complete = True
-        st.info("💡 Showing demo data. Complete Partner Assessment for real results.")
-
     if not st.session_state.get("assessment_complete"):
         st.warning("⚠️ Please complete the Partner Assessment first.")
         st.stop()
@@ -104,7 +141,7 @@ def main():
     name_b = st.session_state.person_b_name
 
     with st.expander("⚙️ Settings"):
-        use_llm = st.checkbox("Use LLM (requires OpenAI key)", value=True)
+        use_llm = st.checkbox("Use LLM (requires API key)", value=True)
         st.caption("When disabled, uses template-based simulation.")
 
     conflicts = detect_conflicts(person_a, person_b)
@@ -130,8 +167,8 @@ def main():
     if st.button("🚀 Run Full Simulation", type="primary"):
         with st.spinner("Running multi-agent simulation..."):
             sim = run_full_simulation(person_a, person_b, use_llm=use_llm)
-        st.markdown(f"**Summary:** {sim['summary']}")
-        st.markdown(f"**Overall Resolution Score:** {sim['overall_resolution_score']:.1f}%")
+        st.markdown(f"<div class='ai-output'><b>Summary:</b> {sim['summary']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='ai-output'><b>Overall Resolution Score:</b> {sim['overall_resolution_score']:.1f}%</div>", unsafe_allow_html=True)
 
         for i, s in enumerate(sim["simulations"]):
             c = s["conflict"]
@@ -141,23 +178,23 @@ def main():
                 expanded=(i == 0),
             ):
                 col1, col2 = st.columns(2)
-                with col1: st.markdown(f"**{name_a}:** {c['person_a_value'].replace('_', ' ')}")
-                with col2: st.markdown(f"**{name_b}:** {c['person_b_value'].replace('_', ' ')}")
+                with col1: st.markdown(f"<div style='color:#5C2A3E;'><b>{name_a}:</b> {c['person_a_value'].replace('_', ' ')}</div>", unsafe_allow_html=True)
+                with col2: st.markdown(f"<div style='color:#5C2A3E;'><b>{name_b}:</b> {c['person_b_value'].replace('_', ' ')}</div>", unsafe_allow_html=True)
                 st.divider()
-                st.markdown(s["simulation"])
+                st.markdown(f"<div class='ai-output'>{s['simulation']}</div>", unsafe_allow_html=True)
     else:
         st.markdown("### Detected Conflicts")
         for c in conflicts:
             icon = "🔴" if c["severity"] == "HIGH" else "🟡"
             st.markdown(f"""
             <div class='conflict-card'>
-                <b>{icon} {c["title"]}</b>
+                <b style='color:#5C2A3E;'>{icon} {c["title"]}</b>
                 <span style='color:#8A6B7A; float:right;'>{c["severity"]}</span>
                 <div style='margin-top:0.4rem; font-size:0.9rem; color:#3E3E3E;'>
                     <b style='color:#D4577A;'>{name_a}:</b> {c["person_a_value"].replace("_", " ")} &nbsp;·&nbsp;
                     <b style='color:#8A6B7A;'>{name_b}:</b> {c["person_b_value"].replace("_", " ")}
                 </div>
-                <div style='color:#8A6B7A; font-size:0.85rem; margin-top:0.3rem; font-style:italic;'>
+                <div style='color:#5C2A3E; font-size:0.85rem; margin-top:0.3rem; font-style:italic;'>
                     {c["description"]}
                 </div>
             </div>
