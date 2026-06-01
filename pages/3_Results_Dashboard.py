@@ -21,6 +21,7 @@ from utils.visualization import (
 )
 from models.ensemble import compute_ensemble_score
 from ai.conflict_simulation import detect_conflicts
+from session_store import load_profiles
 
 
 def page_css():
@@ -167,6 +168,9 @@ def main():
         <div class='page-sub'>Your complete compatibility story — powered by AI</div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Restore session from file if page was navigated to directly
+    load_profiles()
 
     # Require assessment to be complete — no demo data fallback
     if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a") or not st.session_state.get("person_b"):
