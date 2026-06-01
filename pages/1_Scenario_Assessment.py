@@ -241,7 +241,7 @@ def main():
     # Demo buttons
     c1, c2, c3 = st.columns(3)
     with c1:
-        if st.button(f"⚡ Auto-fill {name_a}", use_container_width=True):
+        if st.button(f"⚡ Auto-fill {name_a}", key="autofill_a", use_container_width=True):
             for sc in scenarios_a:
                 sid = str(sc["id"])
                 chosen = dict(sc["choices"][0])
@@ -249,7 +249,7 @@ def main():
                 st.session_state.responses_a[sid] = chosen
             st.rerun()
     with c2:
-        if st.button(f"⚡ Auto-fill {name_b}", use_container_width=True):
+        if st.button(f"⚡ Auto-fill {name_b}", key="autofill_b", use_container_width=True):
             for sc in scenarios_b:
                 sid = str(sc["id"])
                 chosen = dict(sc["choices"][0])
@@ -257,7 +257,7 @@ def main():
                 st.session_state.responses_b[sid] = chosen
             st.rerun()
     with c3:
-        if st.button("🔄 Reset All", use_container_width=True):
+        if st.button("🔄 Reset All", key="reset_all_p1", use_container_width=True):
             st.session_state.responses_a = {}
             st.session_state.responses_b = {}
             st.rerun()
@@ -334,7 +334,7 @@ def main():
     if done_a >= total and done_b >= total:
         st.markdown('<div class="divider-gold"></div>', unsafe_allow_html=True)
         st.success("🎉 Both partners completed all scenarios!")
-        if st.button("💾 Save Profiles & Continue to Family Assessment", type="primary"):
+        if st.button("💾 Save Profiles & Continue to Family Assessment", key="save_profiles", type="primary"):
             pa = extract_profile(st.session_state.responses_a)
             pb = extract_profile(st.session_state.responses_b)
             pa["name"] = name_a
