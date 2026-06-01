@@ -9,7 +9,6 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import DATA_DIR, DOMAIN_OPTIONS, PERSONALITY_TRAITS
-from session_store import save_profiles
 
 
 def load_scenarios(gender="female"):
@@ -115,6 +114,22 @@ def page_css():
         line-height: 1.65;
     }
 
+    .partner-header {
+        background: white;
+        border-radius: 14px;
+        padding: 1rem 1.4rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 10px rgba(212,87,122,0.08);
+        display: flex; align-items: center; gap: 10px;
+    }
+    .partner-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.3rem; font-weight: 700; color: #5C2A3E;
+    }
+    .progress-text {
+        font-size: 0.8rem; color: #8A6B7A; margin-top: 0.2rem;
+    }
+
     .complete-card {
         background: linear-gradient(135deg, #6BAF73, #4A8A52);
         border-radius: 14px; padding: 1.2rem;
@@ -124,6 +139,8 @@ def page_css():
         box-shadow: 0 4px 16px rgba(107,175,115,0.3);
     }
 
+    /* Hide black radio dot */
+    /* Hide radio dot */
     div[data-testid="stRadio"] > div > label > div:first-child {
         display: none !important;
     }
@@ -146,6 +163,7 @@ def page_css():
         background: #FFF0F4 !important;
         border-color: #D4577A !important;
     }
+    /* Force ALL text inside radio labels to be visible - covers all Streamlit versions */
     div[data-testid="stRadio"] > div > label *,
     div[data-testid="stRadio"] > div > label p,
     div[data-testid="stRadio"] > div > label span,
@@ -315,11 +333,15 @@ def main():
             pb = extract_profile(st.session_state.responses_b)
             pa["name"] = name_a
             pb["name"] = name_b
-
-            # Persist to file AND session_state so other pages can load it
-            save_profiles(pa, pb, name_a, name_b)
+            st.session_state.profile_a = pa
+            st.session_state.profile_b = pb
             st.session_state.names = {"a": name_a, "b": name_b}
-            st.success("✅ Saved! Navigate to In-Laws Questionnaire in the sidebar.")
+            st.session_state.person_a_name = name_a
+            st.session_state.person_b_name = name_b
+            st.session_state.person_a = pa
+            st.session_state.person_b = pb
+            st.session_state.assessment_complete = True
+            st.success(f"✅ Profiles saved for {name_a} and {name_b}! Navigate to In-Laws Questionnaire.")
 
 
 main()
