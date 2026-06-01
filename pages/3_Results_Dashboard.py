@@ -169,12 +169,12 @@ def main():
     """, unsafe_allow_html=True)
 
     # Require assessment to be complete — no demo data fallback
-    if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a"):
+    if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a") or not st.session_state.get("person_b"):
         st.warning("⚠️ Please complete the **Partner Assessment** first before viewing results.")
         st.stop()
 
-    person_a = st.session_state.person_a
-    person_b = st.session_state.person_b
+    person_a = st.session_state.get("person_a")
+    person_b = st.session_state.get("person_b")
     name_a = st.session_state.get("person_a_name", person_a.get("name", "Partner A"))
     name_b = st.session_state.get("person_b_name", person_b.get("name", "Partner B"))
 
