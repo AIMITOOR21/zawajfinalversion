@@ -10,7 +10,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from ai.llm_client import get_llm_response
 
 
-def generate_compatibility_advice(results, conflicts, counterfactuals=None):
+def generate_compatibility_advice(results, conflicts, counterfactuals=None, name_a="Partner A", name_b="Partner B"):
     """Generate comprehensive compatibility advice using LLM.
 
     Args:
@@ -40,16 +40,16 @@ healthy communication. Be specific and actionable. Never be judgmental."""
         conflict_section = "\n\nDetected Conflicts:\n"
         for c in conflicts[:5]:
             conflict_section += f"- {c['title']} (Severity: {c['severity']}, Resolution: {c['resolution_probability']:.0f}%)\n"
-            conflict_section += f"  Partner A: {c['person_a_value']}, Partner B: {c['person_b_value']}\n"
+            conflict_section += f"  {name_a}: {c['person_a_value']}, {name_b}: {c['person_b_value']}\n"
 
     prompt = f"""Generate a comprehensive compatibility improvement plan for this Pakistani couple:
 
 **Compatibility Score: {score}% ({label})**
 
 Score Breakdown:
-- Individual Compatibility: {breakdown['Individual Compatibility']['score']}%
-- Family Network: {breakdown['Family Network']['score']}%
-- Conflict Resolution: {breakdown['Conflict Resolution']['score']}%
+- Individual Compatibility: {breakdown.get('Individual Compatibility', {}).get('score', breakdown.get('partner_alignment', 0)*100):.1f}%
+- Family Network: {breakdown.get('Family Network', {}).get('score', breakdown.get('inlaw_alignment', 0)*100):.1f}%
+- Conflict Resolution: {breakdown.get('Conflict Resolution', {}).get('score', breakdown.get('conflict_resolution', 0)*100):.1f}%
 {conflict_section}{cf_section}
 
 Please provide:
