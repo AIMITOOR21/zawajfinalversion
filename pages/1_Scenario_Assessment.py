@@ -219,9 +219,15 @@ def main():
 
     col1, col2 = st.columns(2)
     with col1:
-        name_a = st.text_input("💐 Girl's name", value="Sara", key="name_a")
+        name_a = st.text_input("💐 Girl's name", value=st.session_state.get("person_a_name", "Sara"), key="name_a")
+        if name_a:
+            st.session_state.person_a_name = name_a
+            st.session_state.setdefault("names", {})["a"] = name_a
     with col2:
-        name_b = st.text_input("🌙 Boy's name", value="Ahmed", key="name_b")
+        name_b = st.text_input("🌙 Boy's name", value=st.session_state.get("person_b_name", "Ahmed"), key="name_b")
+        if name_b:
+            st.session_state.person_b_name = name_b
+            st.session_state.setdefault("names", {})["b"] = name_b
 
     scenarios_a = load_scenarios("female")
     scenarios_b = load_scenarios("male")
