@@ -9,6 +9,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import DATA_DIR, DOMAIN_OPTIONS, PERSONALITY_TRAITS
+from session_store import save_profiles
 
 
 def load_scenarios(gender="female"):
@@ -315,15 +316,9 @@ def main():
             pa["name"] = name_a
             pb["name"] = name_b
 
-            # Save under ALL key names used across pages
-            st.session_state.profile_a = pa
-            st.session_state.profile_b = pb
-            st.session_state.person_a = pa          # used by Results, Conflict, Improvement
-            st.session_state.person_b = pb          # used by Results, Conflict, Improvement
-            st.session_state.person_a_name = name_a # used by Results, Conflict, Improvement
-            st.session_state.person_b_name = name_b # used by Results, Conflict, Improvement
+            # Persist to file AND session_state so other pages can load it
+            save_profiles(pa, pb, name_a, name_b)
             st.session_state.names = {"a": name_a, "b": name_b}
-            st.session_state.assessment_complete = True
             st.success("✅ Saved! Navigate to In-Laws Questionnaire in the sidebar.")
 
 
