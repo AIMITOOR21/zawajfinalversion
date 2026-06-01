@@ -96,7 +96,7 @@ def detect_conflicts(person_a, person_b):
     return conflicts
 
 
-def simulate_conflict(person_a, person_b, conflict, use_llm=True):
+def simulate_conflict(person_a, person_b, conflict, use_llm=True, name_a="Partner A", name_b="Partner B"):
     """Simulate a specific conflict using multi-agent LLM.
 
     Two AI agents role-play each partner's argumentation style.
@@ -114,11 +114,11 @@ Format your response with clear sections: Partner A's Perspective, Partner B's P
 **Conflict: {conflict['title']}**
 {conflict['description']}
 
-**Partner A's stance:** {conflict['person_a_value'].replace('_', ' ')}
+**{name_a}'s stance:** {conflict['person_a_value'].replace('_', ' ')}
 - Agreeableness: {person_a.get('agreeableness', 0.5):.1f}/1.0
 - Openness: {person_a.get('openness', 0.5):.1f}/1.0
 
-**Partner B's stance:** {conflict['person_b_value'].replace('_', ' ')}
+**{name_b}'s stance:** {conflict['person_b_value'].replace('_', ' ')}
 - Agreeableness: {person_b.get('agreeableness', 0.5):.1f}/1.0
 - Openness: {person_b.get('openness', 0.5):.1f}/1.0
 
@@ -135,7 +135,7 @@ Then assess: What is the probability they can resolve this? What compromise migh
     }
 
 
-def _template_simulation(person_a, person_b, conflict):
+def _template_simulation(person_a, person_b, conflict, name_a='Partner A', name_b='Partner B'):
     """Template-based conflict simulation when LLM is unavailable."""
     domain = conflict["domain"]
     sev = conflict["severity"]
@@ -143,11 +143,11 @@ def _template_simulation(person_a, person_b, conflict):
 
     simulation = f"""**Conflict Analysis: {conflict['title']}**
 
-**Partner A's Position ({conflict['person_a_value'].replace('_', ' ').title()}):**
-Partner A feels strongly about this aspect of their future life. Based on their personality profile (agreeableness: {person_a.get('agreeableness', 0.5):.1f}, openness: {person_a.get('openness', 0.5):.1f}), they are {'likely to be flexible' if person_a.get('agreeableness', 0.5) > 0.6 else 'somewhat rigid'} in negotiations.
+**{name_a}'s Position ({conflict['person_a_value'].replace('_', ' ').title()}):**
+{name_a} feels strongly about this aspect of their future life. Based on their personality profile (agreeableness: {person_a.get('agreeableness', 0.5):.1f}, openness: {person_a.get('openness', 0.5):.1f}), they are {'likely to be flexible' if person_a.get('agreeableness', 0.5) > 0.6 else 'somewhat rigid'} in negotiations.
 
-**Partner B's Position ({conflict['person_b_value'].replace('_', ' ').title()}):**
-Partner B has a different vision for this area. With agreeableness of {person_b.get('agreeableness', 0.5):.1f} and openness of {person_b.get('openness', 0.5):.1f}, they {'may be willing to compromise' if person_b.get('openness', 0.5) > 0.5 else 'may find compromise difficult'}.
+**{name_b}'s Position ({conflict['person_b_value'].replace('_', ' ').title()}):**
+{name_b} has a different vision for this area. With agreeableness of {person_b.get('agreeableness', 0.5):.1f} and openness of {person_b.get('openness', 0.5):.1f}, they {'may be willing to compromise' if person_b.get('openness', 0.5) > 0.5 else 'may find compromise difficult'}.
 
 **Resolution Assessment:**
 - Severity: {sev}
@@ -162,7 +162,7 @@ Partner B has a different vision for this area. With agreeableness of {person_b.
     }
 
 
-def run_full_simulation(person_a, person_b, use_llm=True):
+def run_full_simulation(person_a, person_b, use_llm=True, name_a="Partner A", name_b="Partner B"):
     """Run complete conflict detection and simulation.
 
     Returns overall conflict forecast with individual simulations.
@@ -179,7 +179,7 @@ def run_full_simulation(person_a, person_b, use_llm=True):
 
     simulations = []
     for conflict in conflicts[:5]:  # Top 5 conflicts
-        sim = simulate_conflict(person_a, person_b, conflict, use_llm=use_llm)
+        sim = simulate_conflict(person_a, person_b, conflict, use_llm=use_llm, name_a=name_a, name_b=name_b)
         simulations.append(sim)
 
     # Overall resolution score = average of individual resolution probabilities
