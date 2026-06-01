@@ -13,23 +13,45 @@ except Exception:
     OPENAI_API_KEY = ""
     OPENAI_MODEL = "gpt-3.5-turbo"
 
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
+
+def _get_gemini_key():
+    """Read GEMINI_API_KEY from Streamlit secrets first, then env vars."""
+    # Try Streamlit secrets (most reliable on Streamlit Cloud)
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets:
+            key = st.secrets["GEMINI_API_KEY"]
+            if key:
+                return key
+    except Exception as e:
+        print(f"[llm_client] Couldn't read st.secrets: {e}")
+
+    # Fall back to environment variable
+    return os.environ.get("GEMINI_API_KEY", "")
+
 
 _gemini_model = None
 
+
 def _get_gemini():
+    """Initialise and cache the Gemini model."""
     global _gemini_model
     if _gemini_model is not None:
         return _gemini_model
-    if not GEMINI_API_KEY:
+
+    api_key = _get_gemini_key()
+    if not api_key:
+        print("[llm_client] No GEMINI_API_KEY found in secrets or env")
         return None
+
     try:
         import google.generativeai as genai
-        genai.configure(api_key=GEMINI_API_KEY)
+        genai.configure(api_key=api_key)
         _gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+        print(f"[llm_client] Gemini initialised. Key starts with: {api_key[:8]}...")
         return _gemini_model
     except Exception as e:
-        print(f"Gemini init error: {e}")
+        print(f"[llm_client] Gemini init error: {e}")
         return None
 
 
@@ -51,7 +73,7 @@ def get_llm_response(prompt, system_prompt=None, temperature=0.7, max_tokens=100
             )
             return response.text.strip(), True
         except Exception as e:
-            print(f"Gemini error: {e}")
+            print(f"[llm_client] Gemini call error: {e}")
 
     # Try OpenAI
     if OPENAI_API_KEY:
@@ -70,8 +92,9 @@ def get_llm_response(prompt, system_prompt=None, temperature=0.7, max_tokens=100
             )
             return resp.choices[0].message.content, True
         except Exception as e:
-            print(f"OpenAI error: {e}")
+            print(f"[llm_client] OpenAI error: {e}")
 
+    print("[llm_client] Falling back to mock response")
     return _mock_response(prompt), False
 
 
