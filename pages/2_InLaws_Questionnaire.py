@@ -424,42 +424,62 @@ def render_member(member_key, expanded=True):
     done = len(responses)
     total = len(m["scenarios"])
 
-    with st.expander(f"{m['emoji']} {m['label']}", expanded=expanded):
-        st.progress(done / total if total else 0)
-        st.caption(f"{done} of {total} answered")
+    # Member header — no expander, just a styled card
+    st.markdown(f"""
+    <div style="background:#1a0a0e; border-radius:10px; padding:0.75rem 1rem;
+         margin:0.8rem 0 0.3rem; cursor:pointer;">
+        <span style="color:white; font-family:'Poppins',sans-serif;
+              font-weight:600; font-size:0.95rem;">
+            {m['emoji']} {m['label']}
+        </span>
+    </div>
+    """, unsafe_allow_html=True)
 
-        if done >= total:
-            score = compute_score(responses, member_key)
-            color = "#6BAF73" if score >= 70 else "#E8A846" if score >= 45 else "#D4577A"
-            label = "Supportive ✓" if score >= 70 else "Mixed ◐" if score >= 45 else "Friction Risk ✗"
-            st.markdown(f"<div style='background:{color}15; border:1px solid {color}40; border-radius:10px; padding:0.8rem; text-align:center; margin:0.5rem 0;'><span style='color:{color}; font-weight:700; font-size:1.2rem;'>{score}%</span><br><span style='color:{color}; font-size:0.85rem;'>{label}</span></div>", unsafe_allow_html=True)
-            return score
+    st.progress(done / total if total else 0)
+    st.caption(f"{done} of {total} answered")
 
-        for sc in m["scenarios"]:
-            if sc["id"] in responses:
-                continue
+    if done >= total:
+        score = compute_score(responses, member_key)
+        color = "#6BAF73" if score >= 70 else "#E8A846" if score >= 45 else "#D4577A"
+        label = "Supportive ✓" if score >= 70 else "Mixed ◐" if score >= 45 else "Friction Risk ✗"
+        st.markdown(f"""
+        <div style="background:{color}15; border:1px solid {color}40;
+             border-radius:10px; padding:0.8rem; text-align:center; margin:0.5rem 0;">
+            <span style="color:{color}; font-weight:700; font-size:1.2rem;">{score}%</span><br>
+            <span style="color:{color}; font-size:0.85rem;">{label}</span>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("---")
+        return score
 
-            st.markdown(f"""
-            <div class='q-tile'>
-                <div class='q-topic'>{sc['topic']}</div>
-                <div class='q-text'>{sc['question']}</div>
-            </div>
-            """, unsafe_allow_html=True)
+    for sc in m["scenarios"]:
+        if sc["id"] in responses:
+            continue
 
-            for i, choice in enumerate(sc["choices"]):
-                col_btn, col_txt = st.columns([0.08, 0.92])
-                with col_btn:
-                    if st.button(LETTERS[i], key=f"{member_key}_{sc['id']}_{i}",
-                                 type="secondary"):
-                        responses[sc["id"]] = i
-                        st.session_state[resp_key] = responses
-                        st.rerun()
-                with col_txt:
-                    st.markdown(
-                        f"<div style='padding-top:0.4rem; color:#3E3E3E; font-family:Poppins,sans-serif; font-size:0.9rem;'>{choice['text']}</div>",
-                        unsafe_allow_html=True)
-            break
+        st.markdown(f"""
+        <div class="q-tile">
+            <div class="q-topic">{sc["topic"]}</div>
+            <div class="q-text">{sc["question"]}</div>
+        </div>
+        """, unsafe_allow_html=True)
 
+        for i, choice in enumerate(sc["choices"]):
+            col_btn, col_txt = st.columns([0.08, 0.92])
+            with col_btn:
+                if st.button(LETTERS[i], key=f"{member_key}_{sc['id']}_{i}",
+                             type="secondary"):
+                    responses[sc["id"]] = i
+                    st.session_state[resp_key] = responses
+                    st.rerun()
+            with col_txt:
+                st.markdown(
+                    f"<div style='padding-top:0.4rem; color:#3E3E3E; "
+                    f"font-family:Poppins,sans-serif; font-size:0.9rem;'>"
+                    f"{choice['text']}</div>",
+                    unsafe_allow_html=True)
+        break
+
+    st.markdown("---")
     return compute_score(responses, member_key) if done >= total else None
 
 
