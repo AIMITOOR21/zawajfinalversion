@@ -494,8 +494,13 @@ def main():
     st.markdown('<div class="divider-gold"></div>', unsafe_allow_html=True)
     st.markdown('<div class="page-sub">Both families · Member-by-member · Optional siblings</div>', unsafe_allow_html=True)
 
-    name_a = st.session_state.get("person_a_name") or st.session_state.get("names", {}).get("a", "Sara")
-    name_b = st.session_state.get("person_b_name") or st.session_state.get("names", {}).get("b", "Ahmed")
+    # Read names - check all possible locations Page 1 might have saved them
+    name_a = (st.session_state.get("person_a_name") or 
+              st.session_state.get("names", {}).get("a") or 
+              st.session_state.get("profile_a", {}).get("name") or "Sara")
+    name_b = (st.session_state.get("person_b_name") or 
+              st.session_state.get("names", {}).get("b") or 
+              st.session_state.get("profile_b", {}).get("name") or "Ahmed")
 
     # Demo buttons in a clean row
     c1, c2, c3 = st.columns(3)
