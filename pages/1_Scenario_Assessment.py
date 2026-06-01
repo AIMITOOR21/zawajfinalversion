@@ -217,17 +217,21 @@ def main():
     st.markdown('<p class="page-sub">Scenario-based questions that reveal true values — not just stated ones</p>', unsafe_allow_html=True)
     st.markdown('<div class="divider-gold"></div>', unsafe_allow_html=True)
 
+    # Initialize name defaults in session state ONCE
+    if "name_a" not in st.session_state:
+        st.session_state["name_a"] = st.session_state.get("person_a_name", "Sara")
+    if "name_b" not in st.session_state:
+        st.session_state["name_b"] = st.session_state.get("person_b_name", "Ahmed")
+
     col1, col2 = st.columns(2)
     with col1:
-        name_a = st.text_input("💐 Girl's name", value=st.session_state.get("person_a_name", "Sara"), key="name_a")
-        if name_a:
-            st.session_state.person_a_name = name_a
-            st.session_state.setdefault("names", {})["a"] = name_a
+        name_a = st.text_input("💐 Girl's name", key="name_a")
+        st.session_state.person_a_name = name_a
+        st.session_state.setdefault("names", {})["a"] = name_a
     with col2:
-        name_b = st.text_input("🌙 Boy's name", value=st.session_state.get("person_b_name", "Ahmed"), key="name_b")
-        if name_b:
-            st.session_state.person_b_name = name_b
-            st.session_state.setdefault("names", {})["b"] = name_b
+        name_b = st.text_input("🌙 Boy's name", key="name_b")
+        st.session_state.person_b_name = name_b
+        st.session_state.setdefault("names", {})["b"] = name_b
 
     scenarios_a = load_scenarios("female")
     scenarios_b = load_scenarios("male")
