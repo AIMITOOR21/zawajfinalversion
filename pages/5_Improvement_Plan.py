@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import COLORS
 from xai.counterfactual import generate_counterfactuals, compute_max_potential_score
 from ai.advice_generator import generate_compatibility_advice, generate_quick_summary
+from session_store import load_profiles
 
 
 def page_css():
@@ -179,6 +180,9 @@ def main():
         <div class='page-sub'>Counterfactual AI · What small changes would raise your score?</div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Restore session from file if page was navigated to directly
+    load_profiles()
 
     if not st.session_state.get("results_computed") or not st.session_state.get("person_a") or not st.session_state.get("results"):
         st.warning("⚠️ Please complete the **Partner Assessment** and view the **Results Dashboard** first.")
