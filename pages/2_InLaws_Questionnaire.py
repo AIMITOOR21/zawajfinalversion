@@ -549,7 +549,180 @@ def main():
         render_member("ahmed_sister", expanded=False)
 
     with tab3:
-        st.info("This section compares what the boy claims about his family versus what his family actually said — and what the girl hopes for. Complete both family tabs first.")
+        st.markdown(f"""
+        <div class="role-intro">
+            <div class="role-title">Claims vs Hopes</div>
+            <div class="role-sub">What {name_b} claims about his family · What {name_a} hopes for</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        CLAIMS_QS = [
+            {"id": "c1", "topic": "Mother's Warmth",
+             "question": f"How does {name_b} describe his mother's attitude toward a future daughter-in-law?",
+             "choices": [
+                 {"text": "She'll treat her like her own daughter.", "score": 1.0},
+                 {"text": "She's warm but it takes time to build trust.", "score": 0.7},
+                 {"text": "She's traditional but fair.", "score": 0.45},
+                 {"text": "She has strong opinions about how things should be done.", "score": 0.2}]},
+            {"id": "c2", "topic": "Living Arrangement",
+             "question": f"What does {name_b} say about living arrangements after marriage?",
+             "choices": [
+                 {"text": "We'll have our own home — full independence.", "score": 1.0},
+                 {"text": "We'll start together then move later.", "score": 0.65},
+                 {"text": "My family expects us nearby but not necessarily together.", "score": 0.45},
+                 {"text": "Joint family is expected in our culture.", "score": 0.2}]},
+            {"id": "c3", "topic": "Family Involvement",
+             "question": f"How does {name_b} describe his family's involvement in the couple's decisions?",
+             "choices": [
+                 {"text": "They give us full space — our decisions are ours.", "score": 1.0},
+                 {"text": "They advise when asked, but don't interfere.", "score": 0.7},
+                 {"text": "They're involved in major decisions.", "score": 0.4},
+                 {"text": "Family input is expected on most things.", "score": 0.15}]},
+            {"id": "c4", "topic": "Wife's Career",
+             "question": f"What does {name_b} claim his family thinks about his wife working?",
+             "choices": [
+                 {"text": "They're fully supportive — her career is her right.", "score": 1.0},
+                 {"text": "They're okay with it as long as home duties are covered.", "score": 0.6},
+                 {"text": "They'd prefer she focuses on family after children.", "score": 0.35},
+                 {"text": "They expect a traditional home setup.", "score": 0.1}]},
+        ]
+
+        HOPES_QS = [
+            {"id": "h1", "topic": "Mother-in-Law Warmth",
+             "question": f"What does {name_a} hope her mother-in-law will be like?",
+             "choices": [
+                 {"text": "Like a second mother — warm and welcoming.", "score": 1.0},
+                 {"text": "Kind and respectful of our boundaries.", "score": 0.8},
+                 {"text": "Polite and not too involved in our life.", "score": 0.5},
+                 {"text": "Present for big occasions but not in daily life.", "score": 0.3}]},
+            {"id": "h2", "topic": "Living Arrangement",
+             "question": f"What living arrangement does {name_a} hope for after marriage?",
+             "choices": [
+                 {"text": "Our own home with full independence.", "score": 1.0},
+                 {"text": "Close to family but separate.", "score": 0.7},
+                 {"text": "Flexible — we'd figure it out together.", "score": 0.55},
+                 {"text": "Joint family if everyone gets along well.", "score": 0.3}]},
+            {"id": "h3", "topic": "Family Involvement",
+             "question": f"How involved does {name_a} hope his family will be in their decisions?",
+             "choices": [
+                 {"text": "Not at all — our life is ours to decide.", "score": 1.0},
+                 {"text": "Advisory — we can choose whether to listen.", "score": 0.75},
+                 {"text": "Involved in major decisions with mutual respect.", "score": 0.45},
+                 {"text": "I'm okay with family involvement if it's respectful.", "score": 0.4}]},
+            {"id": "h4", "topic": "Career Support",
+             "question": f"What does {name_a} hope his family's attitude will be about her career?",
+             "choices": [
+                 {"text": "Fully supportive — they'll be proud of her work.", "score": 1.0},
+                 {"text": "Neutral — it's between her and her husband.", "score": 0.7},
+                 {"text": "Accepting as long as family comes first.", "score": 0.4},
+                 {"text": "I hope they adjust their expectations over time.", "score": 0.3}]},
+        ]
+
+        col_l, col_r = st.columns(2)
+
+        # Claims (Ahmed)
+        with col_l:
+            st.markdown(f"""
+            <div style="background:#1a0a0e; border-radius:10px; padding:0.75rem 1rem; margin-bottom:0.8rem;">
+                <span style="color:white; font-family:'Poppins',sans-serif; font-weight:600;">
+                    🤵 {name_b}'s Claims about his family
+                </span>
+            </div>
+            """, unsafe_allow_html=True)
+
+            resp_key_c = "il_claims"
+            if resp_key_c not in st.session_state:
+                st.session_state[resp_key_c] = {}
+            claims = st.session_state[resp_key_c]
+
+            for sc in CLAIMS_QS:
+                if sc["id"] in claims:
+                    chosen = sc["choices"][claims[sc["id"]]]["text"]
+                    st.markdown(f"""
+                    <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:8px;
+                         padding:0.6rem 0.9rem; margin-bottom:0.4rem;">
+                        <div style="font-size:0.7rem; color:#16a34a; font-weight:600; margin-bottom:0.2rem;">{sc['topic']} ✓</div>
+                        <div style="font-size:0.85rem; color:#3A1A2B;">{chosen}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    continue
+
+                st.markdown(f"""
+                <div class="q-tile">
+                    <div class="q-topic">{sc['topic']}</div>
+                    <div class="q-text">{sc['question']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                for i, choice in enumerate(sc["choices"]):
+                    col_btn, col_txt = st.columns([0.1, 0.9])
+                    with col_btn:
+                        if st.button(LETTERS[i], key=f"claim_{sc['id']}_{i}", type="secondary"):
+                            claims[sc["id"]] = i
+                            st.session_state[resp_key_c] = claims
+                            st.rerun()
+                    with col_txt:
+                        st.markdown(f"<div style='padding-top:0.4rem;color:#3E3E3E;font-size:0.88rem;'>{choice['text']}</div>", unsafe_allow_html=True)
+                break
+
+        # Hopes (Sara)
+        with col_r:
+            st.markdown(f"""
+            <div style="background:#3a0a1e; border-radius:10px; padding:0.75rem 1rem; margin-bottom:0.8rem;">
+                <span style="color:white; font-family:'Poppins',sans-serif; font-weight:600;">
+                    👰 {name_a}'s Hopes about his family
+                </span>
+            </div>
+            """, unsafe_allow_html=True)
+
+            resp_key_h = "il_hopes"
+            if resp_key_h not in st.session_state:
+                st.session_state[resp_key_h] = {}
+            hopes = st.session_state[resp_key_h]
+
+            for sc in HOPES_QS:
+                if sc["id"] in hopes:
+                    chosen = sc["choices"][hopes[sc["id"]]]["text"]
+                    st.markdown(f"""
+                    <div style="background:#fdf2f8; border:1px solid #f0abfc; border-radius:8px;
+                         padding:0.6rem 0.9rem; margin-bottom:0.4rem;">
+                        <div style="font-size:0.7rem; color:#a21caf; font-weight:600; margin-bottom:0.2rem;">{sc['topic']} ✓</div>
+                        <div style="font-size:0.85rem; color:#3A1A2B;">{chosen}</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    continue
+
+                st.markdown(f"""
+                <div class="q-tile">
+                    <div class="q-topic">{sc['topic']}</div>
+                    <div class="q-text">{sc['question']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                for i, choice in enumerate(sc["choices"]):
+                    col_btn, col_txt = st.columns([0.1, 0.9])
+                    with col_btn:
+                        if st.button(LETTERS[i], key=f"hope_{sc['id']}_{i}", type="secondary"):
+                            hopes[sc["id"]] = i
+                            st.session_state[resp_key_h] = hopes
+                            st.rerun()
+                    with col_txt:
+                        st.markdown(f"<div style='padding-top:0.4rem;color:#3E3E3E;font-size:0.88rem;'>{choice['text']}</div>", unsafe_allow_html=True)
+                break
+
+        # Show alignment if both complete
+        if len(claims) >= len(CLAIMS_QS) and len(hopes) >= len(HOPES_QS):
+            st.markdown("---")
+            claim_avg = sum(CLAIMS_QS[i]["choices"][claims[CLAIMS_QS[i]["id"]]]["score"] for i in range(len(CLAIMS_QS)) if CLAIMS_QS[i]["id"] in claims) / len(CLAIMS_QS)
+            hope_avg = sum(HOPES_QS[i]["choices"][hopes[HOPES_QS[i]["id"]]]["score"] for i in range(len(HOPES_QS)) if HOPES_QS[i]["id"] in hopes) / len(HOPES_QS)
+            alignment = round((claim_avg + hope_avg) / 2 * 100, 1)
+            color = "#6BAF73" if alignment >= 70 else "#E8A846" if alignment >= 45 else "#D4577A"
+            st.markdown(f"""
+            <div style="background:white; border-radius:14px; padding:1.2rem; text-align:center;
+                 border:1px solid {color}40; box-shadow:0 4px 14px {color}20;">
+                <div style="font-size:0.75rem; color:#8A6B7A; letter-spacing:2px; text-transform:uppercase; font-weight:600;">Claims vs Hopes Alignment</div>
+                <div style="font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; color:{color};">{alignment}%</div>
+                <div style="font-size:0.85rem; color:#8A6B7A; margin-top:0.3rem;">How well {name_b}'s claims match {name_a}'s hopes</div>
+            </div>
+            """, unsafe_allow_html=True)
 
     with tab4:
         scores = {}
