@@ -415,7 +415,7 @@ def compute_score(responses, member_key):
     return round(sum(scores) / len(scores) * 100, 1)
 
 
-def render_member(member_key, expanded=True):
+def render_member(member_key, expanded=True, name_a="Sara", name_b="Ahmed"):
     m = INLAW_SCENARIOS[member_key]
     resp_key = f"il_{member_key}"
     if resp_key not in st.session_state:
@@ -426,9 +426,7 @@ def render_member(member_key, expanded=True):
 
     # Member header — use dynamic name from session state
     raw_label = m["label"]
-    dyn_name_a = st.session_state.get("person_a_name") or st.session_state.get("names", {}).get("a", "Sara")
-    dyn_name_b = st.session_state.get("person_b_name") or st.session_state.get("names", {}).get("b", "Ahmed")
-    dyn_label = raw_label.replace("Sara", dyn_name_a).replace("Ahmed", dyn_name_b)
+    dyn_label = raw_label.replace("Sara", name_a).replace("Ahmed", name_b)
     st.markdown(f"""
     <div style="background:#1a0a0e; border-radius:10px; padding:0.75rem 1rem;
          margin:0.8rem 0 0.3rem; cursor:pointer;">
@@ -502,13 +500,13 @@ def main():
     # Demo buttons in a clean row
     c1, c2, c3 = st.columns(3)
     with c1:
-        if st.button("⚡ Fill Sara's family", use_container_width=True):
+        if st.button(f"⚡ Fill {name_a}'s family", use_container_width=True):
             for mk in ["sara_mother", "sara_father", "sara_brother", "sara_sister"]:
                 m = INLAW_SCENARIOS[mk]
                 st.session_state[f"il_{mk}"] = {sc["id"]: 0 for sc in m["scenarios"]}
             st.rerun()
     with c2:
-        if st.button("⚡ Fill Ahmed's family", use_container_width=True):
+        if st.button(f"⚡ Fill {name_b}'s family", use_container_width=True):
             for mk in ["ahmed_mother", "ahmed_father", "ahmed_brother", "ahmed_sister"]:
                 m = INLAW_SCENARIOS[mk]
                 st.session_state[f"il_{mk}"] = {sc["id"]: 0 for sc in m["scenarios"]}
@@ -547,10 +545,10 @@ def main():
             <div class='role-sub'>Profile each member individually.</div>
         </div>
         """, unsafe_allow_html=True)
-        render_member("ahmed_mother", expanded=True)
-        render_member("ahmed_father", expanded=False)
-        render_member("ahmed_brother", expanded=False)
-        render_member("ahmed_sister", expanded=False)
+        render_member("ahmed_mother", expanded=True, name_a=name_a, name_b=name_b)
+        render_member("ahmed_father", expanded=False, name_a=name_a, name_b=name_b)
+        render_member("ahmed_brother", expanded=False, name_a=name_a, name_b=name_b)
+        render_member("ahmed_sister", expanded=False, name_a=name_a, name_b=name_b)
 
     with tab3:
         st.markdown(f"""
