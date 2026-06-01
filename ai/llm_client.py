@@ -93,3 +93,8 @@ def _mock_response(prompt: str) -> str:
             "personalised, context-aware insights based on both partners' full profiles and family assessments. "
             "Configure the GEMINI_API_KEY in your Streamlit secrets to enable live AI responses."
         )
+
+
+# Alias for backward compatibility
+def get_llm_response(prompt: str, max_tokens: int = 800) -> str:
+    return call_llm(prompt, max_tokens)
