@@ -62,6 +62,16 @@ def page_css():
         from { opacity: 0; transform: translateY(10px); }
         to   { opacity: 1; transform: translateY(0); }
     }
+    /* Force all text visible */
+    .stApp p, .stApp div, .stApp span, .stApp b, .stApp strong {
+        color: #3A1A2B !important;
+    }
+    [data-testid="stAlert"] p, [data-testid="stAlert"] div {
+        color: #3A1A2B !important;
+        font-size: 0.95rem !important;
+    }
+    .conflict-card, .conflict-card * { color: #3A1A2B !important; }
+    .simulation-text, .simulation-text * { color: #3A1A2B !important; }
     </style>
     """, unsafe_allow_html=True)
 
