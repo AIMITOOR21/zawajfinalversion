@@ -7,7 +7,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 INLAW_SCENARIOS = {
     "sara_mother": {
-        "label": "Sara's Mother", "emoji": "👩",
+        "label": "Girl's Mother", "emoji": "👩",
         "scenarios": [
             {"id": "sm_1", "topic": "Cultural Outlook",
              "question": "When you imagine the kind of man you'd want for your daughter, what comes to mind first?",
@@ -45,7 +45,7 @@ INLAW_SCENARIOS = {
                  {"text": "That she doesn't drift too far from us.", "score": 0.4},
                  {"text": "That her husband becomes part of our family, fully.", "score": 0.5}]}]},
     "sara_father": {
-        "label": "Sara's Father", "emoji": "👨",
+        "label": "Girl's Father", "emoji": "👨",
         "scenarios": [
             {"id": "sf_1", "topic": "Son-in-Law's Role",
              "question": "What's the most important thing for a son-in-law to be for your daughter?",
@@ -83,7 +83,7 @@ INLAW_SCENARIOS = {
                  {"text": "That she'll soften too much for him — lose her edge.", "score": 0.5},
                  {"text": "I don't worry. She's strong enough to choose well.", "score": 0.7}]}]},
     "ahmed_mother": {
-        "label": "Ahmed's Mother", "emoji": "👩",
+        "label": "Boy's Mother", "emoji": "👩",
         "scenarios": [
             {"id": "am_1", "topic": "Daughter-in-Law's Place",
              "question": "How do you see a daughter-in-law in your home?",
@@ -121,7 +121,7 @@ INLAW_SCENARIOS = {
                  {"text": "That she makes him a better man.", "score": 0.6},
                  {"text": "That she has the patience for a long marriage.", "score": 0.35}]}]},
     "ahmed_father": {
-        "label": "Ahmed's Father", "emoji": "👨",
+        "label": "Boy's Father", "emoji": "👨",
         "scenarios": [
             {"id": "af_1", "topic": "What He Wants",
              "question": "What do you most want from your daughter-in-law?",
@@ -160,7 +160,7 @@ INLAW_SCENARIOS = {
                  {"text": "It'll be what it'll be. I don't predict.", "score": 0.5}]}]},
 
     "sara_brother": {
-        "label": "Sara's Brother", "emoji": "🧑",
+        "label": "Girl's Brother", "emoji": "🧑",
         "scenarios": [
             {"id": "sb_1", "topic": "Support for the Marriage",
              "question": "If your sister comes to you with doubts before the wedding, what's your first instinct?",
@@ -185,7 +185,7 @@ INLAW_SCENARIOS = {
                  {"text": "With their marriage. I'd want them to work it out.", "score": 0.9}]}]},
 
     "sara_sister": {
-        "label": "Sara's Sister", "emoji": "👧",
+        "label": "Girl's Sister", "emoji": "👧",
         "scenarios": [
             {"id": "ss_1", "topic": "What She Wants for Sister",
              "question": "What's the most important thing for your sister's husband to be for her?",
@@ -210,7 +210,7 @@ INLAW_SCENARIOS = {
                  {"text": "I'd want her to remember where she came from.", "score": 0.2}]}]},
 
     "ahmed_brother": {
-        "label": "Ahmed's Brother", "emoji": "🧑",
+        "label": "Boy's Brother", "emoji": "🧑",
         "scenarios": [
             {"id": "abr_1", "topic": "What He Wants for Brother",
              "question": "What would you most want for your brother in his wife?",
@@ -235,7 +235,7 @@ INLAW_SCENARIOS = {
                  {"text": "It's not my place to take sides in family talk.", "score": 0.3}]}]},
 
     "ahmed_sister": {
-        "label": "Ahmed's Sister", "emoji": "👧",
+        "label": "Boy's Sister", "emoji": "👧",
         "scenarios": [
             {"id": "asi_1", "topic": "Kind of Woman for Brother",
              "question": "What kind of woman would you most want to see your brother marry?",
@@ -426,7 +426,7 @@ def render_member(member_key, expanded=True, name_a="Sara", name_b="Ahmed"):
 
     # Member header — use dynamic name from session state
     raw_label = m["label"]
-    dyn_label = raw_label.replace("Sara", name_a).replace("Ahmed", name_b)
+    dyn_label = raw_label.replace("Girl", name_a).replace("Boy", name_b)
     st.markdown(f"""
     <div style="background:#1a0a0e; border-radius:10px; padding:0.75rem 1rem;
          margin:0.8rem 0 0.3rem; cursor:pointer;">
