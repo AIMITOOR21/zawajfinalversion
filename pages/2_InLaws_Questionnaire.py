@@ -424,13 +424,17 @@ def render_member(member_key, expanded=True):
     done = len(responses)
     total = len(m["scenarios"])
 
-    # Member header — no expander, just a styled card
+    # Member header — use dynamic name from session state
+    raw_label = m["label"]
+    dyn_name_a = st.session_state.get("person_a_name") or st.session_state.get("names", {}).get("a", "Sara")
+    dyn_name_b = st.session_state.get("person_b_name") or st.session_state.get("names", {}).get("b", "Ahmed")
+    dyn_label = raw_label.replace("Sara", dyn_name_a).replace("Ahmed", dyn_name_b)
     st.markdown(f"""
     <div style="background:#1a0a0e; border-radius:10px; padding:0.75rem 1rem;
          margin:0.8rem 0 0.3rem; cursor:pointer;">
         <span style="color:white; font-family:'Poppins',sans-serif;
               font-weight:600; font-size:0.95rem;">
-            {m['emoji']} {m['label']}
+            {m['emoji']} {dyn_label}
         </span>
     </div>
     """, unsafe_allow_html=True)
@@ -492,8 +496,8 @@ def main():
     st.markdown('<div class="divider-gold"></div>', unsafe_allow_html=True)
     st.markdown('<div class="page-sub">Both families · Member-by-member · Optional siblings</div>', unsafe_allow_html=True)
 
-    name_a = st.session_state.get("names", {}).get("a", "Sara")
-    name_b = st.session_state.get("names", {}).get("b", "Ahmed")
+    name_a = st.session_state.get("person_a_name") or st.session_state.get("names", {}).get("a", "Sara")
+    name_b = st.session_state.get("person_b_name") or st.session_state.get("names", {}).get("b", "Ahmed")
 
     # Demo buttons in a clean row
     c1, c2, c3 = st.columns(3)
