@@ -1,0 +1,222 @@
+[
+  {
+    "id": "b1",
+    "domain": "career",
+    "text": "Your wife tells you over dinner she's been offered a senior position. The salary is higher than yours. She seems excited.",
+    "choices": [
+      {"text": "\"That's incredible — let me know how I can support you adjusting to it.\"", "domain": "career", "value": "career_focused", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.1}},
+      {"text": "\"Congrats. We should sit down and talk about how this changes things at home.\"", "domain": "career", "value": "balanced", "score": 0.6, "vector": {"individualism": 0.5, "tradition": 0.4}},
+      {"text": "\"Mashallah. Just take care of yourself — these roles eat people up.\"", "domain": "career", "value": "family_focused", "score": 0.35, "vector": {"individualism": 0.6, "tradition": 0.6}},
+      {"text": "\"That's huge. Let's celebrate properly this weekend and work out the details later.\"", "domain": "career", "value": "family_focused", "score": 0.2, "vector": {"individualism": 0.7, "tradition": 0.5}}
+    ]
+  },
+  {
+    "id": "b2",
+    "domain": "career",
+    "text": "Your wife gets admission to a 3-year PhD in London. Partial scholarship. She'd be living abroad most of that time.",
+    "choices": [
+      {"text": "\"It's your dream. If you want it, we figure out the rest.\"", "domain": "career", "value": "career_focused", "score": 1.0, "vector": {"individualism": 0.1, "tradition": 0.1}},
+      {"text": "\"This needs a real conversation. What about kids, family, distance?\"", "domain": "career", "value": "balanced", "score": 0.55, "vector": {"individualism": 0.5, "tradition": 0.5}},
+      {"text": "\"I'm proud you got in. Let me think about how I'd manage things here.\"", "domain": "career", "value": "family_focused", "score": 0.3, "vector": {"individualism": 0.6, "tradition": 0.55}},
+      {"text": "\"Whatever you decide, I'm with you — just don't let people pressure you into refusing.\"", "domain": "career", "value": "balanced", "score": 0.65, "vector": {"individualism": 0.3, "tradition": 0.3}}
+    ]
+  },
+  {
+    "id": "b3",
+    "domain": "career",
+    "text": "Your wife wants to start a clothing business with her savings. It'll need 2 years to break even. Your cousins ask why she 'needs' to do this.",
+    "choices": [
+      {"text": "\"It's her venture, her money. We're happy with it.\"", "domain": "career", "value": "career_focused", "score": 1.0, "vector": {"individualism": 0.15, "tradition": 0.1}},
+      {"text": "\"She's been planning this for months. We've thought it through.\"", "domain": "career", "value": "balanced", "score": 0.6, "vector": {"individualism": 0.4, "tradition": 0.35}},
+      {"text": "\"She finds it meaningful, and I'd rather her chase it than regret not trying.\"", "domain": "career", "value": "balanced", "score": 0.7, "vector": {"individualism": 0.35, "tradition": 0.3}},
+      {"text": "\"You know how women are when they have ideas — let her try, she'll figure it out.\"", "domain": "career", "value": "family_focused", "score": 0.1, "vector": {"individualism": 0.85, "tradition": 0.75}}
+    ]
+  },
+  {
+    "id": "b4",
+    "domain": "location",
+    "text": "Your wife is offered a 3-year posting in Dubai. To go, you'd leave your job, parents, and life here.",
+    "choices": [
+      {"text": "\"If this is what you want, I'll figure out my side.\"", "domain": "location", "value": "go_abroad", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.1}},
+      {"text": "\"Let's both list what we'd be giving up, then decide together.\"", "domain": "location", "value": "flexible", "score": 0.65, "vector": {"individualism": 0.4, "tradition": 0.35}},
+      {"text": "\"I'll try to find work there. If I can't, we'll have to reconsider.\"", "domain": "location", "value": "same_city", "score": 0.4, "vector": {"individualism": 0.6, "tradition": 0.5}},
+      {"text": "\"You should take it. Three years isn't long — we can manage.\"", "domain": "location", "value": "flexible", "score": 0.55, "vector": {"individualism": 0.5, "tradition": 0.4}}
+    ]
+  },
+  {
+    "id": "b5",
+    "domain": "location",
+    "text": "You can afford a house 45 minutes from your parents in a quiet suburb, OR a smaller apartment 5 minutes from them. Your wife prefers the suburb.",
+    "choices": [
+      {"text": "\"Let's get the suburb house — we need our space to build our own life.\"", "domain": "location", "value": "same_city", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.2}},
+      {"text": "\"My parents are getting older. Living close helps, but let's talk.\"", "domain": "location", "value": "same_city", "score": 0.55, "vector": {"individualism": 0.5, "tradition": 0.6}},
+      {"text": "\"You'll be in the house more than me. Whatever feels right to you.\"", "domain": "location", "value": "flexible", "score": 0.65, "vector": {"individualism": 0.35, "tradition": 0.3}},
+      {"text": "\"The suburb is great, but I'd want to be at my parents' place often.\"", "domain": "location", "value": "same_city", "score": 0.45, "vector": {"individualism": 0.55, "tradition": 0.65}}
+    ]
+  },
+  {
+    "id": "b6",
+    "domain": "location",
+    "text": "You and your wife live abroad. Your father is diagnosed with a chronic illness. Your siblings expect you to move back.",
+    "choices": [
+      {"text": "\"This is something I need to discuss with my wife. We'll decide together.\"", "domain": "location", "value": "flexible", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.3}},
+      {"text": "\"I'll go for now — she can join when she's ready.\"", "domain": "location", "value": "same_city", "score": 0.4, "vector": {"individualism": 0.7, "tradition": 0.65}},
+      {"text": "\"My siblings should share the responsibility. Why is it on me?\"", "domain": "location", "value": "go_abroad", "score": 0.65, "vector": {"individualism": 0.4, "tradition": 0.3}},
+      {"text": "\"This changes things. I owe my parents this time.\"", "domain": "location", "value": "same_city", "score": 0.3, "vector": {"individualism": 0.8, "tradition": 0.75}}
+    ]
+  },
+  {
+    "id": "b7",
+    "domain": "family_structure",
+    "text": "Three months in, your mother privately says your wife is 'disrespectful.' Your wife says your mother is overbearing. Both want you to say something.",
+    "choices": [
+      {"text": "\"I'd talk to each separately, then bring them together to clear the air.\"", "domain": "family_structure", "value": "nuclear_family", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.25}},
+      {"text": "\"I'd ask my wife to be patient — my mother means well.\"", "domain": "family_structure", "value": "joint_family", "score": 0.25, "vector": {"individualism": 0.75, "tradition": 0.8}},
+      {"text": "\"I'd ask my mother to give us space — this is between me and my wife.\"", "domain": "family_structure", "value": "nuclear_family", "score": 0.85, "vector": {"individualism": 0.25, "tradition": 0.2}},
+      {"text": "\"I'd avoid taking sides. They need to figure it out themselves.\"", "domain": "family_structure", "value": "extended_family", "score": 0.3, "vector": {"individualism": 0.65, "tradition": 0.5}}
+    ]
+  },
+  {
+    "id": "b8",
+    "domain": "family_structure",
+    "text": "Your parents expect you to live with them after marriage. Your wife wants a separate home. They ask you directly.",
+    "choices": [
+      {"text": "\"We've decided to live separately. We'll visit often.\"", "domain": "family_structure", "value": "nuclear_family", "score": 1.0, "vector": {"individualism": 0.15, "tradition": 0.15}},
+      {"text": "\"Let's try together first — if it doesn't work, we'll move.\"", "domain": "family_structure", "value": "joint_family", "score": 0.35, "vector": {"individualism": 0.65, "tradition": 0.7}},
+      {"text": "\"My wife would prefer separate, so I think that's best.\"", "domain": "family_structure", "value": "nuclear_family", "score": 0.7, "vector": {"individualism": 0.3, "tradition": 0.25}},
+      {"text": "\"It's complicated. Let me think about it and let you know.\"", "domain": "family_structure", "value": "extended_family", "score": 0.25, "vector": {"individualism": 0.7, "tradition": 0.6}}
+    ]
+  },
+  {
+    "id": "b9",
+    "domain": "family_structure",
+    "text": "It's the first Eid after marriage. Both families want you for the full day.",
+    "choices": [
+      {"text": "\"We'll split the day — morning with one, evening with the other.\"", "domain": "family_structure", "value": "nuclear_family", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.3}},
+      {"text": "\"Wife's family in the morning, my family in the evening. They're closer.\"", "domain": "family_structure", "value": "extended_family", "score": 0.5, "vector": {"individualism": 0.5, "tradition": 0.55}},
+      {"text": "\"We'll decide based on what makes the most logistical sense.\"", "domain": "family_structure", "value": "extended_family", "score": 0.45, "vector": {"individualism": 0.55, "tradition": 0.5}},
+      {"text": "\"My family always does Eid early — that's the priority, we'll fit hers in after.\"", "domain": "family_structure", "value": "joint_family", "score": 0.2, "vector": {"individualism": 0.8, "tradition": 0.75}}
+    ]
+  },
+  {
+    "id": "b10",
+    "domain": "children",
+    "text": "You're 6 months married. Your wife wants to wait 3-4 years for kids. Your mother keeps asking 'when's the good news?'",
+    "choices": [
+      {"text": "\"It's our timing. I'll tell my mother to stop asking.\"", "domain": "children", "value": "after_stability", "score": 1.0, "vector": {"individualism": 0.15, "tradition": 0.1}},
+      {"text": "\"My wife wants to wait. We're respecting that.\"", "domain": "children", "value": "after_stability", "score": 0.8, "vector": {"individualism": 0.25, "tradition": 0.2}},
+      {"text": "\"We're not rushing. My mother will adjust.\"", "domain": "children", "value": "after_stability", "score": 0.7, "vector": {"individualism": 0.35, "tradition": 0.3}},
+      {"text": "\"There's no rush. When the right time comes, we'll know.\"", "domain": "children", "value": "2_to_3", "score": 0.45, "vector": {"individualism": 0.55, "tradition": 0.5}}
+    ]
+  },
+  {
+    "id": "b11",
+    "domain": "children",
+    "text": "Your 6-year-old refuses to pray. Your wife wants gentle persuasion. You were raised with discipline.",
+    "choices": [
+      {"text": "\"She knows what works with him better than I do — I'll follow her lead.\"", "domain": "children", "value": "after_stability", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.2}},
+      {"text": "\"We need to be consistent. Let's agree on one approach and stick to it.\"", "domain": "children", "value": "2_to_3", "score": 0.6, "vector": {"individualism": 0.4, "tradition": 0.5}},
+      {"text": "\"Gentle now, but I'd want to step in if he's still refusing in a year.\"", "domain": "children", "value": "2_to_3", "score": 0.45, "vector": {"individualism": 0.55, "tradition": 0.65}},
+      {"text": "\"I respect her approach, but a father's job is sometimes to be firm.\"", "domain": "children", "value": "large_family", "score": 0.2, "vector": {"individualism": 0.75, "tradition": 0.8}}
+    ]
+  },
+  {
+    "id": "b12",
+    "domain": "children",
+    "text": "Your child can attend an elite English-medium school (secular, expensive) or a strong Islamic school (conservative, cheaper). Your wife strongly prefers the first.",
+    "choices": [
+      {"text": "\"If she feels strongly, I'd go with her preference.\"", "domain": "children", "value": "after_stability", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.15}},
+      {"text": "\"Let's visit both before deciding.\"", "domain": "children", "value": "2_to_3", "score": 0.6, "vector": {"individualism": 0.4, "tradition": 0.45}},
+      {"text": "\"Education matters to her — I'll trust her judgment on this.\"", "domain": "children", "value": "after_stability", "score": 0.8, "vector": {"individualism": 0.25, "tradition": 0.2}},
+      {"text": "\"The English-medium school is fine, as long as we balance with religious education at home.\"", "domain": "children", "value": "2_to_3", "score": 0.5, "vector": {"individualism": 0.5, "tradition": 0.6}}
+    ]
+  },
+  {
+    "id": "b13",
+    "domain": "roles",
+    "text": "You and your wife both work full days. It's 9pm, both tired, dishes are sitting.",
+    "choices": [
+      {"text": "\"I'll do them. You've had a long day.\"", "domain": "roles", "value": "equal_partnership", "score": 1.0, "vector": {"individualism": 0.1, "tradition": 0.05}},
+      {"text": "\"Let's split the kitchen — you cook, I clean.\"", "domain": "roles", "value": "equal_partnership", "score": 0.75, "vector": {"individualism": 0.3, "tradition": 0.3}},
+      {"text": "\"We should hire help — this is too much for both of us.\"", "domain": "roles", "value": "equal_partnership", "score": 0.6, "vector": {"individualism": 0.45, "tradition": 0.3}},
+      {"text": "\"My mother used to handle the kitchen entirely — I'm impressed how she did it.\"", "domain": "roles", "value": "traditional_roles", "score": 0.1, "vector": {"individualism": 0.85, "tradition": 0.9}}
+    ]
+  },
+  {
+    "id": "b14",
+    "domain": "roles",
+    "text": "You and your wife have disagreed on a major decision for weeks. Neither will budge.",
+    "choices": [
+      {"text": "\"Let's bring in someone we both trust to hear us out.\"", "domain": "roles", "value": "equal_partnership", "score": 1.0, "vector": {"individualism": 0.2, "tradition": 0.2}},
+      {"text": "\"I'll let her have this one — she clearly cares more.\"", "domain": "roles", "value": "equal_partnership", "score": 0.65, "vector": {"individualism": 0.4, "tradition": 0.3}},
+      {"text": "\"We need to keep talking until one of us is convinced.\"", "domain": "roles", "value": "equal_partnership", "score": 0.55, "vector": {"individualism": 0.5, "tradition": 0.4}},
+      {"text": "\"At some point, someone has to make the call — and that's usually me.\"", "domain": "roles", "value": "traditional_roles", "score": 0.05, "vector": {"individualism": 0.9, "tradition": 0.9}}
+    ]
+  },
+  {
+    "id": "b15",
+    "domain": "roles",
+    "text": "Your wife asks for your phone password. You've never shared passwords with anyone.",
+    "choices": [
+      {"text": "\"Of course. Here it is.\"", "domain": "roles", "value": "equal_partnership", "score": 1.0, "vector": {"individualism": 0.1, "tradition": 0.1}},
+      {"text": "\"I don't share passwords as a habit — but you can ask to see anything anytime.\"", "domain": "roles", "value": "equal_partnership", "score": 0.6, "vector": {"individualism": 0.45, "tradition": 0.4}},
+      {"text": "\"Why? Is something wrong?\"", "domain": "roles", "value": "traditional_roles", "score": 0.3, "vector": {"individualism": 0.7, "tradition": 0.6}},
+      {"text": "\"I'll give it to you, but I'd hope it stays a formality.\"", "domain": "roles", "value": "equal_partnership", "score": 0.45, "vector": {"individualism": 0.6, "tradition": 0.5}}
+    ]
+  },
+  {
+    "id": "b16",
+    "domain": "finances",
+    "text": "Both you and your wife earn. How do you set up finances?",
+    "choices": [
+      {"text": "\"Joint account, both have full access to everything.\"", "domain": "finances", "value": "joint_management", "score": 1.0, "vector": {"individualism": 0.1, "tradition": 0.15}},
+      {"text": "\"Joint for household, separate for personal — privacy matters.\"", "domain": "finances", "value": "separate_accounts", "score": 0.7, "vector": {"individualism": 0.35, "tradition": 0.3}},
+      {"text": "\"I'll handle the big stuff, she manages day-to-day expenses.\"", "domain": "finances", "value": "husband_manages", "score": 0.25, "vector": {"individualism": 0.75, "tradition": 0.8}},
+      {"text": "\"Whatever she prefers — I'm flexible.\"", "domain": "finances", "value": "joint_management", "score": 0.65, "vector": {"individualism": 0.4, "tradition": 0.3}}
+    ]
+  },
+  {
+    "id": "b17",
+    "domain": "finances",
+    "text": "Your unmarried brother needs PKR 5 lakh for a business. You have it in savings accumulated jointly with your wife. Do you tell her?",
+    "choices": [
+      {"text": "\"I'd discuss it with her first — it's our money now.\"", "domain": "finances", "value": "joint_management", "score": 1.0, "vector": {"individualism": 0.1, "tradition": 0.15}},
+      {"text": "\"I'd tell her, but I'd give the money either way.\"", "domain": "finances", "value": "separate_accounts", "score": 0.45, "vector": {"individualism": 0.6, "tradition": 0.65}},
+      {"text": "\"I'd mention it after — it's family, she'd understand.\"", "domain": "finances", "value": "husband_manages", "score": 0.2, "vector": {"individualism": 0.8, "tradition": 0.75}},
+      {"text": "\"She doesn't need to be involved in every family financial decision.\"", "domain": "finances", "value": "husband_manages", "score": 0.05, "vector": {"individualism": 0.95, "tradition": 0.9}}
+    ]
+  },
+  {
+    "id": "b18",
+    "domain": "finances",
+    "text": "Your family hints they expect a significant dowry. Your wife's family is middle-class — providing it would strain them.",
+    "choices": [
+      {"text": "\"I'd tell my family clearly we don't want a dowry.\"", "domain": "finances", "value": "joint_management", "score": 1.0, "vector": {"individualism": 0.1, "tradition": 0.1}},
+      {"text": "\"I'd talk to my parents privately and ask them to ease off.\"", "domain": "finances", "value": "separate_accounts", "score": 0.6, "vector": {"individualism": 0.45, "tradition": 0.5}},
+      {"text": "\"I'd let it play out — my wife's family can give what they can.\"", "domain": "finances", "value": "husband_manages", "score": 0.25, "vector": {"individualism": 0.75, "tradition": 0.7}},
+      {"text": "\"Whatever happens between the families, I'd stay out of it.\"", "domain": "finances", "value": "husband_manages", "score": 0.1, "vector": {"individualism": 0.85, "tradition": 0.8}}
+    ]
+  },
+  {
+    "id": "b19",
+    "domain": "religion",
+    "text": "Your wife prays occasionally, not five times daily. You're consistent. After marriage, this becomes visible.",
+    "choices": [
+      {"text": "\"Her practice is her relationship with Allah. Not my place to push.\"", "domain": "religion", "value": "liberal", "score": 1.0, "vector": {"individualism": 0.15, "tradition": 0.2}},
+      {"text": "\"I'd lead by example — hope she joins, but never pressure.\"", "domain": "religion", "value": "moderate", "score": 0.65, "vector": {"individualism": 0.4, "tradition": 0.45}},
+      {"text": "\"I'd encourage gently from time to time.\"", "domain": "religion", "value": "moderate", "score": 0.45, "vector": {"individualism": 0.55, "tradition": 0.6}},
+      {"text": "\"I'd want the household to maintain a certain standard, and I'd want her with me on that.\"", "domain": "religion", "value": "very_strict", "score": 0.1, "vector": {"individualism": 0.85, "tradition": 0.9}}
+    ]
+  },
+  {
+    "id": "b20",
+    "domain": "religion",
+    "text": "Your wife's closest friend is non-Muslim. They spend lots of time together — invite her over, go for coffee, etc.",
+    "choices": [
+      {"text": "\"I welcome the friend into our home — diverse friendships are healthy.\"", "domain": "religion", "value": "liberal", "score": 1.0, "vector": {"individualism": 0.1, "tradition": 0.1}},
+      {"text": "\"Her friendships are her business. I don't get involved.\"", "domain": "religion", "value": "moderate", "score": 0.7, "vector": {"individualism": 0.35, "tradition": 0.3}},
+      {"text": "\"I'm fine with it but quietly hope she also keeps Muslim friends close.\"", "domain": "religion", "value": "moderate", "score": 0.5, "vector": {"individualism": 0.5, "tradition": 0.55}},
+      {"text": "\"I'd mention it once that I'd prefer a more religious social circle for her.\"", "domain": "religion", "value": "strict", "score": 0.1, "vector": {"individualism": 0.85, "tradition": 0.85}}
+    ]
+  }
+]
