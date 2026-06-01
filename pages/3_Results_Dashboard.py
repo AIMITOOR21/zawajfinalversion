@@ -168,14 +168,28 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    if not st.session_state.get("assessment_complete"):
-        st.warning("⚠️ Please complete the Partner Assessment first.")
-        st.stop()
+    # Auto-load demo data if assessment not done yet
+    if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a"):
+        st.info("💡 Complete the Partner Assessment to see your real results. Showing demo data below.")
+        # Load demo profiles
+        from config import DOMAIN_OPTIONS
+        import numpy as np
+        demo_a = {d: opts[0] for d, opts in DOMAIN_OPTIONS.items()}
+        demo_a.update({"openness":0.8,"conscientiousness":0.6,"extraversion":0.5,
+                       "agreeableness":0.7,"neuroticism":0.3,"name":"Sara"})
+        demo_b = {d: opts[2] for d, opts in DOMAIN_OPTIONS.items()}
+        demo_b.update({"openness":0.4,"conscientiousness":0.7,"extraversion":0.6,
+                       "agreeableness":0.5,"neuroticism":0.4,"name":"Ahmed"})
+        st.session_state.person_a = demo_a
+        st.session_state.person_b = demo_b
+        st.session_state.person_a_name = "Sara"
+        st.session_state.person_b_name = "Ahmed"
+        st.session_state.assessment_complete = True
 
     person_a = st.session_state.person_a
     person_b = st.session_state.person_b
-    name_a = st.session_state.person_a_name
-    name_b = st.session_state.person_b_name
+    name_a = st.session_state.get("person_a_name", person_a.get("name", "Sara"))
+    name_b = st.session_state.get("person_b_name", person_b.get("name", "Ahmed"))
 
     # Scores
     domain_scores = compute_domain_alignment(person_a, person_b)
