@@ -12,7 +12,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import COLORS
 from xai.counterfactual import generate_counterfactuals, compute_max_potential_score
 from ai.advice_generator import generate_compatibility_advice, generate_quick_summary
-from session_store import load_profiles
 
 
 def page_css():
@@ -25,13 +24,7 @@ def page_css():
     }
     .block-container { padding-top: 1.5rem; max-width: 1100px; }
     h1, h2, h3, h4 { font-family: 'Playfair Display', serif !important; color: #5C2A3E !important; }
-
-    /* FORCE all text visible */
-    p, div, span, label, .stMarkdown, .stMarkdown p, .stMarkdown div {
-        font-family: 'Poppins', sans-serif;
-        color: #3E3E3E !important;
-        opacity: 1 !important;
-    }
+    p, div, span, label, .stMarkdown { font-family: 'Poppins', sans-serif; }
 
     .page-header { text-align: center; padding: 1.5rem 0 0.5rem; animation: fadeIn 0.7s ease-out; }
     .page-title {
@@ -40,7 +33,7 @@ def page_css():
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         background-clip: text; margin: 0;
     }
-    .page-sub { color: #8A6B7A !important; font-style: italic; font-size: 1rem; margin-top: 0.3rem; }
+    .page-sub { color: #8A6B7A; font-style: italic; font-size: 1rem; margin-top: 0.3rem; }
     .divider-gold {
         width: 120px; height: 2px;
         background: linear-gradient(90deg, transparent, #C9A96E, transparent);
@@ -60,98 +53,24 @@ def page_css():
         gap: 1rem;
         align-items: center;
     }
-    .cf-card *, .cf-card b {
-        color: #3E3E3E !important;
-        opacity: 1 !important;
-    }
-    .cf-card b { color: #5C2A3E !important; font-weight: 700 !important; }
-
     .cf-delta {
         background: linear-gradient(135deg, #6BAF73, #4A8C51);
-        color: white !important;
+        color: white;
         padding: 0.3rem 0.8rem;
         border-radius: 20px;
         font-weight: 700;
         font-family: 'Playfair Display', serif;
         font-size: 1.1rem;
-        opacity: 1 !important;
     }
-    .cf-delta * { color: white !important; opacity: 1 !important; }
-
     .summary-box {
         background: linear-gradient(135deg, #FDEEF2, #FFFFFF);
-        border: 1.5px solid #F8D7DE;
+        border: 1px solid #F8D7DE;
         border-radius: 16px;
         padding: 1.3rem 1.5rem;
         margin: 0.6rem 0 1.2rem;
         box-shadow: 0 4px 14px rgba(212, 87, 122, 0.08);
         animation: fadeIn 0.6s ease-out;
-        color: #3E3E3E !important;
     }
-    .summary-box * {
-        color: #3E3E3E !important;
-        opacity: 1 !important;
-    }
-    .summary-box strong, .summary-box b { color: #5C2A3E !important; font-weight: 700 !important; }
-
-    /* AI output box */
-    .ai-output {
-        background: white;
-        border-radius: 14px;
-        padding: 1.3rem 1.5rem;
-        margin: 1rem 0;
-        border: 1.5px solid #F8D7DE;
-        color: #3E3E3E !important;
-        line-height: 1.6;
-    }
-    .ai-output * { color: #3E3E3E !important; opacity: 1 !important; }
-    .ai-output strong, .ai-output b { color: #5C2A3E !important; font-weight: 700 !important; }
-    .ai-output h1, .ai-output h2, .ai-output h3, .ai-output h4 { color: #5C2A3E !important; }
-
-    /* Metric components */
-    [data-testid="stMetricLabel"], [data-testid="stMetricLabel"] p {
-        color: #5C2A3E !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
-    }
-    [data-testid="stMetricValue"] {
-        color: #D4577A !important;
-        font-weight: 700 !important;
-        opacity: 1 !important;
-    }
-    [data-testid="stMetricDelta"] {
-        color: #6BAF73 !important;
-        opacity: 1 !important;
-    }
-
-    /* Expander */
-    [data-testid="stExpander"] details summary,
-    [data-testid="stExpander"] details summary p,
-    [data-testid="stExpander"] summary p {
-        color: #5C2A3E !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
-    }
-    [data-testid="stExpander"] {
-        background: white !important;
-        border: 1px solid #F8D7DE !important;
-        border-radius: 12px !important;
-        margin: 0.5rem 0 !important;
-    }
-    [data-testid="stExpander"] [data-testid="stMarkdownContainer"] p {
-        color: #3E3E3E !important;
-        opacity: 1 !important;
-    }
-
-    /* Info boxes */
-    [data-baseweb="notification"] {
-        color: #5C2A3E !important;
-    }
-    [data-baseweb="notification"] * {
-        color: #5C2A3E !important;
-        opacity: 1 !important;
-    }
-
     .stButton > button {
         border-radius: 24px !important;
         font-family: 'Poppins', sans-serif !important;
@@ -181,18 +100,15 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # Restore session from file if page was navigated to directly
-    load_profiles()
-
-    if not st.session_state.get("results_computed") or not st.session_state.get("person_a") or not st.session_state.get("results"):
-        st.warning("⚠️ Please complete the **Partner Assessment** and view the **Results Dashboard** first.")
+    if not st.session_state.get("results_computed"):
+        st.warning("⚠️ View the Results Dashboard first to compute scores.")
         st.stop()
 
-    person_a = st.session_state.get("person_a")
-    person_b = st.session_state.get("person_b")
-    name_a = st.session_state.get("person_a_name", person_a.get("name", "Partner A"))
-    name_b = st.session_state.get("person_b_name", person_b.get("name", "Partner B"))
-    results = st.session_state.get("results")
+    person_a = st.session_state.person_a
+    person_b = st.session_state.person_b
+    name_a = st.session_state.person_a_name
+    name_b = st.session_state.person_b_name
+    results = st.session_state.results
     conflicts = st.session_state.get("conflicts", [])
     current_score = results["final_score"]
 
@@ -219,11 +135,11 @@ def main():
             st.markdown(f"""
             <div class='cf-card'>
                 <div>
-                    <div style='color:#5C2A3E !important; font-weight:600; font-size:1rem; margin-bottom:0.3rem;'>
+                    <div style='color:#5C2A3E; font-weight:600; font-size:1rem; margin-bottom:0.3rem;'>
                         {i+1}. {cf["change"]}
                     </div>
-                    <div style='color:#5C2A3E !important; font-size:0.85rem;'>
-                        Changes: <b style='color:#5C2A3E !important;'>{cf["who_changes"]}</b> &nbsp;·&nbsp; Feasibility: <b style='color:#5C2A3E !important;'>{cf["feasibility"]}</b>
+                    <div style='color:#8A6B7A; font-size:0.82rem;'>
+                        Changes: <b>{cf["who_changes"]}</b> &nbsp;·&nbsp; Feasibility: <b>{cf["feasibility"]}</b>
                     </div>
                 </div>
                 <div class='cf-delta'>+{cf["improvement"]:.1f}%</div>
@@ -237,10 +153,14 @@ def main():
         with st.spinner("Generating personalized guidance..."):
             advice = generate_compatibility_advice(results, conflicts, counterfactuals)
         st.markdown("---")
-        st.markdown(f"<div class='ai-output'>{advice}</div>", unsafe_allow_html=True)
-        st.caption("✨ Powered by Google Gemini")
+        st.markdown(advice)
+        from config import OPENAI_API_KEY
+        if OPENAI_API_KEY:
+            st.caption("✨ Powered by OpenAI GPT")
+        else:
+            st.caption("✨ Template-based advice — add OPENAI_API_KEY for personalized AI")
     else:
-        st.markdown("<div class='ai-output'>Click above to generate a detailed, AI-powered improvement plan with specific action items.</div>", unsafe_allow_html=True)
+        st.info("Click above to generate a detailed, AI-powered improvement plan with specific action items.")
 
     # Conversation starters
     st.markdown("### Suggested Conversation Starters")
@@ -248,7 +168,7 @@ def main():
         for c in conflicts[:5]:
             with st.expander(f"💬 Discuss: {c['title']}"):
                 for starter in _get_starters(c, name_a, name_b):
-                    st.markdown(f"<div style='color:#3E3E3E !important; padding: 0.3rem 0;'>• {starter}</div>", unsafe_allow_html=True)
+                    st.markdown(f"- {starter}")
     else:
         st.success("No major conflicts — couple is well-aligned!")
 
