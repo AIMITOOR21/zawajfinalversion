@@ -168,32 +168,35 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    # Auto-load demo data if assessment not done yet
+    # Use real data if available, otherwise show demo button (NOT auto-load)
     if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a"):
-        st.info("💡 Complete the Partner Assessment to see your real results. Showing demo data below.")
-        # Load demo profiles
-        from config import DOMAIN_OPTIONS
-        demo_a = {d: opts[0] for d, opts in DOMAIN_OPTIONS.items()}
-        demo_a.update({
-            "openness": 0.8, "conscientiousness": 0.6, "extraversion": 0.5,
-            "agreeableness": 0.7, "neuroticism": 0.3, "name": "Sara",
-            "age": 25, "education": "bachelors", "city": "Lahore",
-            "family_size": 5, "father_authority": 0.4, "mother_influence": 0.6,
-            "sibling_support": 0.7, "family_conservatism": 0.4, "economic_status": "middle",
-        })
-        demo_b = {d: opts[2] for d, opts in DOMAIN_OPTIONS.items()}
-        demo_b.update({
-            "openness": 0.4, "conscientiousness": 0.7, "extraversion": 0.6,
-            "agreeableness": 0.5, "neuroticism": 0.4, "name": "Ahmed",
-            "age": 28, "education": "masters", "city": "Karachi",
-            "family_size": 6, "father_authority": 0.7, "mother_influence": 0.5,
-            "sibling_support": 0.5, "family_conservatism": 0.7, "economic_status": "upper_middle",
-        })
-        st.session_state.person_a = demo_a
-        st.session_state.person_b = demo_b
-        st.session_state.person_a_name = "Sara"
-        st.session_state.person_b_name = "Ahmed"
-        st.session_state.assessment_complete = True
+        st.warning("⚠️ Please complete the Scenario Assessment first to see your real results.")
+        st.markdown("**Or load demo data to preview the dashboard:**")
+        if st.button("▶ Load Demo (Sara & Ahmed)", type="primary"):
+            from config import DOMAIN_OPTIONS
+            demo_a = {d: opts[0] for d, opts in DOMAIN_OPTIONS.items()}
+            demo_a.update({
+                "openness": 0.8, "conscientiousness": 0.6, "extraversion": 0.5,
+                "agreeableness": 0.7, "neuroticism": 0.3, "name": "Sara",
+                "age": 25, "education": "bachelors", "city": "Lahore",
+                "family_size": 5, "father_authority": 0.4, "mother_influence": 0.6,
+                "sibling_support": 0.7, "family_conservatism": 0.4, "economic_status": "middle",
+            })
+            demo_b = {d: opts[2] for d, opts in DOMAIN_OPTIONS.items()}
+            demo_b.update({
+                "openness": 0.4, "conscientiousness": 0.7, "extraversion": 0.6,
+                "agreeableness": 0.5, "neuroticism": 0.4, "name": "Ahmed",
+                "age": 28, "education": "masters", "city": "Karachi",
+                "family_size": 6, "father_authority": 0.7, "mother_influence": 0.5,
+                "sibling_support": 0.5, "family_conservatism": 0.7, "economic_status": "upper_middle",
+            })
+            st.session_state.person_a = demo_a
+            st.session_state.person_b = demo_b
+            st.session_state.person_a_name = "Sara"
+            st.session_state.person_b_name = "Ahmed"
+            st.session_state.assessment_complete = True
+            st.rerun()
+        st.stop()
 
     person_a = st.session_state.person_a
     person_b = st.session_state.person_b
