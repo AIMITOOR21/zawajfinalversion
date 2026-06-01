@@ -47,7 +47,7 @@ def _get_gemini():
     try:
         import google.generativeai as genai
         genai.configure(api_key=api_key)
-        _gemini_model = genai.GenerativeModel("gemini-1.5-flash")
+        _gemini_model = genai.GenerativeModel("gemini-2.5-flash")
         print(f"[llm_client] Gemini initialised. Key starts with: {api_key[:8]}...")
         return _gemini_model
     except Exception as e:
