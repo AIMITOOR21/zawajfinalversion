@@ -131,14 +131,14 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    if not st.session_state.get("assessment_complete"):
+    if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a") or not st.session_state.get("person_b"):
         st.warning("⚠️ Please complete the **Partner Assessment** first.")
         st.stop()
 
-    person_a = st.session_state.person_a
-    person_b = st.session_state.person_b
-    name_a = st.session_state.person_a_name
-    name_b = st.session_state.person_b_name
+    person_a = st.session_state.get("person_a")
+    person_b = st.session_state.get("person_b")
+    name_a = st.session_state.get("person_a_name", person_a.get("name", "Partner A"))
+    name_b = st.session_state.get("person_b_name", person_b.get("name", "Partner B"))
 
     with st.expander("⚙️ Settings"):
         use_llm = st.checkbox("Use LLM (requires API key)", value=True)
