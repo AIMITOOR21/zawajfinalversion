@@ -227,7 +227,7 @@ def main():
                 st.markdown(f"""
                 <div class="scenario-card">
                     <div class="scenario-num">Scenario · {domain_label(sc.get('domain',''))}</div>
-                    <p class="scenario-q">{sc['text']}</p>
+                    <p class="scenario-q">{sc.get('text', sc.get('scenario', ''))}</p>
                 </div>""", unsafe_allow_html=True)
                 choice_labels = [c["text"] for c in sc["choices"]]
                 sel = st.radio("Choose:", choice_labels, key=f"a_{sc['id']}", index=None,
@@ -260,7 +260,7 @@ def main():
                 st.markdown(f"""
                 <div class="scenario-card" style="border-color:#C9E0F5;">
                     <div class="scenario-num" style="color:#1A5C8B;">Scenario · {domain_label(sc.get('domain',''))}</div>
-                    <p class="scenario-q">{sc['text']}</p>
+                    <p class="scenario-q">{sc.get('text', sc.get('scenario', ''))}</p>
                 </div>""", unsafe_allow_html=True)
                 choice_labels = [c["text"] for c in sc["choices"]]
                 sel = st.radio("Choose:", choice_labels, key=f"b_{sc['id']}", index=None,
