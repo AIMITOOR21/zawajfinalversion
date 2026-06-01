@@ -180,15 +180,15 @@ def main():
     </div>
     """, unsafe_allow_html=True)
 
-    if not st.session_state.get("results_computed"):
+    if not st.session_state.get("results_computed") or not st.session_state.get("person_a") or not st.session_state.get("results"):
         st.warning("⚠️ Please complete the **Partner Assessment** and view the **Results Dashboard** first.")
         st.stop()
 
-    person_a = st.session_state.person_a
-    person_b = st.session_state.person_b
-    name_a = st.session_state.person_a_name
-    name_b = st.session_state.person_b_name
-    results = st.session_state.results
+    person_a = st.session_state.get("person_a")
+    person_b = st.session_state.get("person_b")
+    name_a = st.session_state.get("person_a_name", person_a.get("name", "Partner A"))
+    name_b = st.session_state.get("person_b_name", person_b.get("name", "Partner B"))
+    results = st.session_state.get("results")
     conflicts = st.session_state.get("conflicts", [])
     current_score = results["final_score"]
 
