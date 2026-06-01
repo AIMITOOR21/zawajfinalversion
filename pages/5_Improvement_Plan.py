@@ -181,7 +181,7 @@ def main():
     """, unsafe_allow_html=True)
 
     if not st.session_state.get("results_computed"):
-        st.warning("⚠️ View the Results Dashboard first to compute scores.")
+        st.warning("⚠️ Please complete the **Partner Assessment** and view the **Results Dashboard** first.")
         st.stop()
 
     person_a = st.session_state.person_a
