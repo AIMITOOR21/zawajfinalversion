@@ -158,6 +158,106 @@ INLAW_SCENARIOS = {
                  {"text": "Close, but with her own household.", "score": 1.0},
                  {"text": "Respectful, depending on how she's been with us.", "score": 0.3},
                  {"text": "It'll be what it'll be. I don't predict.", "score": 0.5}]}]},
+
+    "sara_brother": {
+        "label": "Sara's Brother", "emoji": "🧑",
+        "scenarios": [
+            {"id": "sb_1", "topic": "Support for the Marriage",
+             "question": "If your sister comes to you with doubts before the wedding, what's your first instinct?",
+             "choices": [
+                 {"text": "Ask what she'd want to happen — support any decision.", "score": 1.0},
+                 {"text": "Listen carefully, help her think through both options.", "score": 0.85},
+                 {"text": "Tell her doubts are normal, encourage her to push through.", "score": 0.45},
+                 {"text": "Go straight to your parents about it.", "score": 0.2}]},
+            {"id": "sb_2", "topic": "Involvement in Couple's Life",
+             "question": "If your sister texts you venting about her husband, what do you do?",
+             "choices": [
+                 {"text": "Listen, then ask if she's talked to him directly.", "score": 1.0},
+                 {"text": "Take her side until she calms down.", "score": 0.55},
+                 {"text": "Ask what he did — I want to know.", "score": 0.4},
+                 {"text": "Stay out of it. It's their marriage.", "score": 0.6}]},
+            {"id": "sb_3", "topic": "Where Loyalty Sits",
+             "question": "If there's ever a serious conflict between your sister and her husband, where does your loyalty sit?",
+             "choices": [
+                 {"text": "With the truth — I'd back whoever's right.", "score": 1.0},
+                 {"text": "With my sister — that's blood. But I'd hear him out.", "score": 0.65},
+                 {"text": "With my sister always. He's not family the way she is.", "score": 0.25},
+                 {"text": "With their marriage. I'd want them to work it out.", "score": 0.9}]}]},
+
+    "sara_sister": {
+        "label": "Sara's Sister", "emoji": "👧",
+        "scenarios": [
+            {"id": "ss_1", "topic": "What She Wants for Sister",
+             "question": "What's the most important thing for your sister's husband to be for her?",
+             "choices": [
+                 {"text": "Her best friend.", "score": 1.0},
+                 {"text": "A man who lets her be fully herself.", "score": 0.95},
+                 {"text": "Someone who can handle her — she's not easy, I'd know.", "score": 0.3},
+                 {"text": "Reliable. Someone she can count on.", "score": 0.7}]},
+            {"id": "ss_2", "topic": "Visible Affection",
+             "question": "Your sister and her husband are visibly affectionate around the family. How do you feel?",
+             "choices": [
+                 {"text": "Happy for them — that's a good marriage.", "score": 1.0},
+                 {"text": "Fine, as long as it's appropriate.", "score": 0.55},
+                 {"text": "A little awkward, but I get it.", "score": 0.6},
+                 {"text": "I'm glad she's loved.", "score": 0.9}]},
+            {"id": "ss_3", "topic": "Sister Spending Time with In-Laws",
+             "question": "Your sister starts spending more time with his family than yours. How do you feel?",
+             "choices": [
+                 {"text": "That's how marriage works. She's building her new home.", "score": 1.0},
+                 {"text": "I'd miss her, but I wouldn't say anything.", "score": 0.6},
+                 {"text": "I'd hope she balances both sides.", "score": 0.5},
+                 {"text": "I'd want her to remember where she came from.", "score": 0.2}]}]},
+
+    "ahmed_brother": {
+        "label": "Ahmed's Brother", "emoji": "🧑",
+        "scenarios": [
+            {"id": "abr_1", "topic": "What He Wants for Brother",
+             "question": "What would you most want for your brother in his wife?",
+             "choices": [
+                 {"text": "A real partner — equal footing.", "score": 1.0},
+                 {"text": "Someone who understands him deeply.", "score": 0.8},
+                 {"text": "Someone who can keep him in line — he needs that.", "score": 0.35},
+                 {"text": "Someone who makes him happier than I've seen him.", "score": 0.9}]},
+            {"id": "abr_2", "topic": "Brother Spending Time with Wife",
+             "question": "After your brother marries, how do you feel about him spending more time with her than family?",
+             "choices": [
+                 {"text": "Normal and good — that's the marriage.", "score": 1.0},
+                 {"text": "As long as he doesn't disappear.", "score": 0.55},
+                 {"text": "It changes things, but we adapt.", "score": 0.65},
+                 {"text": "I'd hope she encourages him to stay close to family.", "score": 0.35}]},
+            {"id": "abr_3", "topic": "Defending Sister-in-Law",
+             "question": "If a family member speaks badly about her behind her back, what would you do?",
+             "choices": [
+                 {"text": "Defend her openly.", "score": 1.0},
+                 {"text": "Ask them to bring it up directly instead.", "score": 0.8},
+                 {"text": "Listen — sometimes there's truth in concerns.", "score": 0.35},
+                 {"text": "It's not my place to take sides in family talk.", "score": 0.3}]}]},
+
+    "ahmed_sister": {
+        "label": "Ahmed's Sister", "emoji": "👧",
+        "scenarios": [
+            {"id": "asi_1", "topic": "Kind of Woman for Brother",
+             "question": "What kind of woman would you most want to see your brother marry?",
+             "choices": [
+                 {"text": "Someone who has her own life — not just absorbed into his.", "score": 1.0},
+                 {"text": "Someone who makes him a better version of himself.", "score": 0.8},
+                 {"text": "Someone we'd all genuinely like and welcome.", "score": 0.6},
+                 {"text": "Someone strong enough to handle him.", "score": 0.4}]},
+            {"id": "asi_2", "topic": "Conflict with Sister-in-Law",
+             "question": "If you and your sister-in-law have a disagreement, what's the right way to handle it?",
+             "choices": [
+                 {"text": "Direct conversation between us — no third party.", "score": 1.0},
+                 {"text": "Through my brother if needed.", "score": 0.3},
+                 {"text": "Time usually heals things.", "score": 0.4},
+                 {"text": "We'd be expected to keep it civil — family is family.", "score": 0.55}]},
+            {"id": "asi_3", "topic": "Sharing Her Brother",
+             "question": "What does it feel like imagining sharing your brother with another woman?",
+             "choices": [
+                 {"text": "It's a good thing — he gets to build something of his own.", "score": 1.0},
+                 {"text": "It's bittersweet, but natural.", "score": 0.75},
+                 {"text": "I'd want to make sure she values him properly.", "score": 0.4},
+                 {"text": "He was never just mine.", "score": 0.85}]}]},
 }
 
 LETTERS = ["A", "B", "C", "D"]
@@ -217,29 +317,38 @@ def page_css():
     }
     .q-text { color: #5C2A3E; font-size: 1rem; font-weight: 500; }
 
+    /* Fix expander arrow showing as text */
+    [data-testid="stExpander"] summary svg {
+        display: inline-block !important;
+        visibility: visible !important;
+    }
     /* Fix expander */
     [data-testid="stExpander"] {
         background: white !important;
         border: 1px solid #F8D7DE !important;
         border-radius: 12px !important;
-        margin: 0.5rem 0 !important;
+        margin: 0.8rem 0 !important;
     }
-    [data-testid="stExpander"] summary,
+    [data-testid="stExpander"] summary {
+        background: white !important;
+        padding: 0.8rem 1rem !important;
+        border-radius: 12px !important;
+    }
     [data-testid="stExpander"] summary p,
     [data-testid="stExpander"] summary span {
         color: #5C2A3E !important;
         font-weight: 600 !important;
         font-family: 'Poppins', sans-serif !important;
+        font-size: 0.95rem !important;
     }
-    [data-testid="stExpander"] > div > div {
+    [data-testid="stExpander"] > div {
         background: white !important;
+        padding: 0.5rem 0.8rem 1rem !important;
     }
-
     /* Fix ALL text inside expander */
     [data-testid="stExpander"] p,
     [data-testid="stExpander"] span,
-    [data-testid="stExpander"] label,
-    [data-testid="stExpander"] div {
+    [data-testid="stExpander"] label {
         color: #3E3E3E !important;
         font-family: 'Poppins', sans-serif !important;
     }
@@ -366,26 +475,27 @@ def main():
     name_a = st.session_state.get("names", {}).get("a", "Sara")
     name_b = st.session_state.get("names", {}).get("b", "Ahmed")
 
-    with st.expander("⚙️ Family Setup — toggle which siblings exist"):
-        c1, c2, c3 = st.columns(3)
-        with c1:
-            if st.button("⚡ Fill Sara's family demo", use_container_width=True):
-                for mk in ["sara_mother", "sara_father"]:
-                    m = INLAW_SCENARIOS[mk]
-                    st.session_state[f"il_{mk}"] = {sc["id"]: 0 for sc in m["scenarios"]}
-                st.rerun()
-        with c2:
-            if st.button("⚡ Fill Ahmed's family demo", use_container_width=True):
-                for mk in ["ahmed_mother", "ahmed_father"]:
-                    m = INLAW_SCENARIOS[mk]
-                    st.session_state[f"il_{mk}"] = {sc["id"]: 0 for sc in m["scenarios"]}
-                st.rerun()
-        with c3:
-            if st.button("🔄 Reset All", use_container_width=True):
-                for mk in INLAW_SCENARIOS:
-                    if f"il_{mk}" in st.session_state:
-                        del st.session_state[f"il_{mk}"]
-                st.rerun()
+    # Demo buttons in a clean row
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        if st.button("⚡ Fill Sara's family", use_container_width=True):
+            for mk in ["sara_mother", "sara_father", "sara_brother", "sara_sister"]:
+                m = INLAW_SCENARIOS[mk]
+                st.session_state[f"il_{mk}"] = {sc["id"]: 0 for sc in m["scenarios"]}
+            st.rerun()
+    with c2:
+        if st.button("⚡ Fill Ahmed's family", use_container_width=True):
+            for mk in ["ahmed_mother", "ahmed_father", "ahmed_brother", "ahmed_sister"]:
+                m = INLAW_SCENARIOS[mk]
+                st.session_state[f"il_{mk}"] = {sc["id"]: 0 for sc in m["scenarios"]}
+            st.rerun()
+    with c3:
+        if st.button("🔄 Reset All", use_container_width=True):
+            for mk in INLAW_SCENARIOS:
+                if f"il_{mk}" in st.session_state:
+                    del st.session_state[f"il_{mk}"]
+            st.rerun()
+    st.markdown("---")
 
     tab1, tab2, tab3, tab4 = st.tabs([
         f"👰 {name_a}'s Family",
@@ -403,6 +513,8 @@ def main():
         """, unsafe_allow_html=True)
         render_member("sara_mother", expanded=True)
         render_member("sara_father", expanded=False)
+        render_member("sara_brother", expanded=False)
+        render_member("sara_sister", expanded=False)
 
     with tab2:
         st.markdown(f"""
@@ -413,6 +525,8 @@ def main():
         """, unsafe_allow_html=True)
         render_member("ahmed_mother", expanded=True)
         render_member("ahmed_father", expanded=False)
+        render_member("ahmed_brother", expanded=False)
+        render_member("ahmed_sister", expanded=False)
 
     with tab3:
         st.info("This section compares what the boy claims about his family versus what his family actually said — and what the girl hopes for. Complete both family tabs first.")
@@ -421,8 +535,12 @@ def main():
         scores = {}
         for mk, lbl in [("sara_mother", f"{name_a}'s Mother"),
                         ("sara_father", f"{name_a}'s Father"),
+                        ("sara_brother", f"{name_a}'s Brother"),
+                        ("sara_sister", f"{name_a}'s Sister"),
                         ("ahmed_mother", f"{name_b}'s Mother"),
-                        ("ahmed_father", f"{name_b}'s Father")]:
+                        ("ahmed_father", f"{name_b}'s Father"),
+                        ("ahmed_brother", f"{name_b}'s Brother"),
+                        ("ahmed_sister", f"{name_b}'s Sister")]:
             if f"il_{mk}" in st.session_state:
                 s = compute_score(st.session_state[f"il_{mk}"], mk)
                 if s is not None:
