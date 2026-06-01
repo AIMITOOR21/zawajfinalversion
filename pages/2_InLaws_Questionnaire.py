@@ -538,10 +538,10 @@ def main():
             <div class='role-sub'>Profile each member individually. Sibling sections appear if enabled above.</div>
         </div>
         """, unsafe_allow_html=True)
-        render_member("sara_mother", expanded=True)
-        render_member("sara_father", expanded=False)
-        render_member("sara_brother", expanded=False)
-        render_member("sara_sister", expanded=False)
+        render_member("sara_mother", expanded=True, name_a=name_a, name_b=name_b)
+        render_member("sara_father", expanded=False, name_a=name_a, name_b=name_b)
+        render_member("sara_brother", expanded=False, name_a=name_a, name_b=name_b)
+        render_member("sara_sister", expanded=False, name_a=name_a, name_b=name_b)
 
     with tab2:
         st.markdown(f"""
