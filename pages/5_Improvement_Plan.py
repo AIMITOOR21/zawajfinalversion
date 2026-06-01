@@ -84,6 +84,11 @@ def page_css():
         from { opacity: 0; transform: translateY(10px); }
         to   { opacity: 1; transform: translateY(0); }
     }
+    /* Force text visible */
+    .stApp p, .stApp div, .stApp span, .stApp b { color: #3A1A2B !important; }
+    [data-testid="stAlert"] p { color: #3A1A2B !important; font-size:0.95rem !important; }
+    .cf-card, .cf-card * { color: #3A1A2B !important; }
+    .advice-box, .advice-box * { color: #3A1A2B !important; }
     </style>
     """, unsafe_allow_html=True)
 
