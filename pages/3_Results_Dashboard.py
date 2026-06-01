@@ -147,10 +147,41 @@ def page_css():
     .conflict-pill {
         background: white;
         border-radius: 12px;
-        padding: 0.7rem 1rem;
-        margin: 0.3rem 0;
+        padding: 0.9rem 1.2rem;
+        margin: 0.5rem 0;
         box-shadow: 0 2px 8px rgba(212, 87, 122, 0.08);
-        border-left: 3px solid #D4577A;
+        border-left: 4px solid #D4577A;
+    }
+    .conflict-pill b { color: #3A1A2B !important; font-size: 1rem; }
+    .conflict-pill span { color: #3A1A2B !important; }
+
+    /* Force ALL text visible everywhere */
+    .stApp p, .stApp div, .stApp span, .stApp label,
+    .stMarkdown p, .stMarkdown div, .stMarkdown span {
+        color: #3A1A2B !important;
+    }
+    .domain-row * { color: #3A1A2B !important; }
+    .metric-tile .label { color: #8A6B7A !important; }
+    .metric-tile .value { color: #5C2A3E !important; }
+    .section-title { color: #5C2A3E !important; }
+    .couple-names { color: #8A6B7A !important; }
+
+    /* Fix warning/info box text */
+    [data-testid="stAlert"] p,
+    [data-testid="stAlert"] div {
+        color: #3A1A2B !important;
+        font-family: "Poppins", sans-serif !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Fix st.warning yellow box */
+    div[data-testid="stAlert"][kind="warning"] {
+        background: #FFF8E1 !important;
+        border: 1px solid #F9A825 !important;
+        border-radius: 10px !important;
+    }
+    div[data-testid="stAlert"][kind="warning"] p {
+        color: #5D4037 !important;
     }
     </style>
     """, unsafe_allow_html=True)
