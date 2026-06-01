@@ -140,6 +140,7 @@ def page_css():
     }
 
     /* Hide black radio dot */
+    /* Hide radio dot */
     div[data-testid="stRadio"] > div > label > div:first-child {
         display: none !important;
     }
@@ -153,9 +154,6 @@ def page_css():
         border: 1.5px solid #F0D0DC !important;
         border-radius: 12px !important;
         padding: 0.8rem 1.2rem !important;
-        color: #3A1A2B !important;
-        font-family: 'Poppins', sans-serif !important;
-        font-size: 0.9rem !important;
         cursor: pointer !important;
         transition: all 0.2s ease !important;
         margin: 0 !important;
@@ -164,13 +162,15 @@ def page_css():
     div[data-testid="stRadio"] > div > label:hover {
         background: #FFF0F4 !important;
         border-color: #D4577A !important;
-        transform: translateX(3px) !important;
     }
-    div[data-testid="stRadio"] > div > label > div > p {
+    /* Force ALL text inside radio labels to be visible - covers all Streamlit versions */
+    div[data-testid="stRadio"] > div > label *,
+    div[data-testid="stRadio"] > div > label p,
+    div[data-testid="stRadio"] > div > label span,
+    div[data-testid="stRadio"] > div > label div {
         color: #3A1A2B !important;
         font-family: 'Poppins', sans-serif !important;
         font-size: 0.9rem !important;
-        margin: 0 !important;
         line-height: 1.5 !important;
     }
 
