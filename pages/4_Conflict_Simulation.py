@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from config import COLORS
 from ai.conflict_simulation import run_full_simulation, detect_conflicts
 from utils.visualization import create_conflict_chart
+from session_store import load_profiles
 
 
 def page_css():
@@ -130,6 +131,9 @@ def main():
         <div class='page-sub'>Multi-agent AI stress-tests your match</div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Restore session from file if page was navigated to directly
+    load_profiles()
 
     if not st.session_state.get("assessment_complete") or not st.session_state.get("person_a") or not st.session_state.get("person_b"):
         st.warning("⚠️ Please complete the **Partner Assessment** first.")
