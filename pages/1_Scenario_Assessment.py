@@ -139,40 +139,39 @@ def page_css():
         box-shadow: 0 4px 16px rgba(107,175,115,0.3);
     }
 
-    /* Radio buttons — fully visible */
-    div[data-testid="stRadio"] > label {
-        font-family: 'Poppins', sans-serif !important;
-        font-size: 0.9rem !important;
-        color: #3A1A2B !important;
-        font-weight: 400 !important;
+    /* Hide black radio dot */
+    div[data-testid="stRadio"] > div > label > div:first-child {
+        display: none !important;
     }
     div[data-testid="stRadio"] > div {
-        background: transparent !important;
+        gap: 0.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
     div[data-testid="stRadio"] > div > label {
         background: white !important;
-        border: 1px solid #F0D0DC !important;
-        border-radius: 10px !important;
-        padding: 0.6rem 1rem !important;
-        margin-bottom: 0.5rem !important;
+        border: 1.5px solid #F0D0DC !important;
+        border-radius: 12px !important;
+        padding: 0.8rem 1.2rem !important;
         color: #3A1A2B !important;
         font-family: 'Poppins', sans-serif !important;
         font-size: 0.9rem !important;
         cursor: pointer !important;
-        transition: all 0.2s !important;
-        display: flex !important;
-        align-items: center !important;
+        transition: all 0.2s ease !important;
+        margin: 0 !important;
+        width: 100% !important;
     }
     div[data-testid="stRadio"] > div > label:hover {
         background: #FFF0F4 !important;
         border-color: #D4577A !important;
-    }
-    div[data-testid="stRadio"] > div > label > div {
-        color: #3A1A2B !important;
+        transform: translateX(3px) !important;
     }
     div[data-testid="stRadio"] > div > label > div > p {
         color: #3A1A2B !important;
         font-family: 'Poppins', sans-serif !important;
+        font-size: 0.9rem !important;
+        margin: 0 !important;
+        line-height: 1.5 !important;
     }
 
     .stTabs [data-baseweb="tab"] {
