@@ -132,7 +132,7 @@ def main():
     """, unsafe_allow_html=True)
 
     if not st.session_state.get("assessment_complete"):
-        st.warning("⚠️ Please complete the Partner Assessment first.")
+        st.warning("⚠️ Please complete the **Partner Assessment** first.")
         st.stop()
 
     person_a = st.session_state.person_a
