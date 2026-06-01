@@ -239,35 +239,35 @@ def page_css():
         color: #3A1A2B; line-height: 1.55;
     }
 
-    .option-btn {
-        display: flex; align-items: center; gap: 14px;
-        background: white;
-        border: 1.5px solid #F0D0DC;
-        border-radius: 12px;
-        padding: 0.75rem 1.1rem;
-        margin-bottom: 0.55rem;
-        cursor: pointer;
-        transition: all 0.2s;
-        width: 100%;
+    /* Radio options styled as clean cards */
+    div[data-testid="stRadio"] > div {
+        gap: 0.5rem !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
-    .option-btn:hover {
-        background: #FFF0F4;
-        border-color: #D4577A;
-        transform: translateX(4px);
+    div[data-testid="stRadio"] > div > label {
+        background: white !important;
+        border: 1.5px solid #F0D0DC !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 1.2rem !important;
+        color: #3A1A2B !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.9rem !important;
+        cursor: pointer !important;
+        transition: all 0.2s !important;
+        display: flex !important;
+        align-items: center !important;
+        margin: 0 !important;
     }
-    .option-letter {
-        width: 32px; height: 32px;
-        background: linear-gradient(135deg, #F8D7DE, #FDEEF2);
-        border: 1.5px solid #D4577A;
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-family: 'Poppins', sans-serif;
-        font-size: 0.8rem; font-weight: 600;
-        color: #D4577A; flex-shrink: 0;
+    div[data-testid="stRadio"] > div > label:hover {
+        background: #FFF0F4 !important;
+        border-color: #D4577A !important;
     }
-    .option-text {
-        font-family: 'Poppins', sans-serif;
-        font-size: 0.9rem; color: #3A1A2B; line-height: 1.4;
+    div[data-testid="stRadio"] > div > label > div > p {
+        color: #3A1A2B !important;
+        font-family: 'Poppins', sans-serif !important;
+        font-size: 0.9rem !important;
+        margin: 0 !important;
     }
 
     .score-badge {
@@ -425,18 +425,15 @@ def render_member(member_key):
         </div>
         """, unsafe_allow_html=True)
 
-        # Render A/B/C/D options
-        for i, choice in enumerate(sc["choices"]):
-            letter = OPTION_LABELS[i]
-            btn_key = f"opt_{sc['id']}_{i}"
-            col_l, col_r = st.columns([1, 12])
-            with col_l:
-                st.markdown(f'<div class="option-letter">{letter}</div>', unsafe_allow_html=True)
-            with col_r:
-                if st.button(choice["text"], key=btn_key, use_container_width=True):
-                    responses[sc["id"]] = i
-                    st.session_state[resp_key] = responses
-                    st.rerun()
+        # Render A/B/C/D options as labelled radio
+        opts = [f"{OPTION_LABELS[i]}. {c['text']}" for i, c in enumerate(sc["choices"])]
+        sel = st.radio("Select your answer:", opts, key=f"radio_{sc['id']}", index=None,
+                       label_visibility="collapsed")
+        if sel is not None:
+            idx = opts.index(sel)
+            responses[sc["id"]] = idx
+            st.session_state[resp_key] = responses
+            st.rerun()
         break
 
     return None
