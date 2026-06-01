@@ -156,7 +156,7 @@ def main():
 
     if st.button("✨ Generate Detailed Advice", type="primary"):
         with st.spinner("Generating personalized guidance..."):
-            advice = generate_compatibility_advice(results, conflicts, counterfactuals)
+            advice = generate_compatibility_advice(results, conflicts, counterfactuals, name_a=name_a, name_b=name_b)
         st.markdown("---")
         st.markdown(advice)
         from config import OPENAI_API_KEY
