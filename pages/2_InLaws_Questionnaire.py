@@ -721,6 +721,10 @@ def main():
             claim_avg = sum(CLAIMS_QS[i]["choices"][claims[CLAIMS_QS[i]["id"]]]["score"] for i in range(len(CLAIMS_QS)) if CLAIMS_QS[i]["id"] in claims) / len(CLAIMS_QS)
             hope_avg = sum(HOPES_QS[i]["choices"][hopes[HOPES_QS[i]["id"]]]["score"] for i in range(len(HOPES_QS)) if HOPES_QS[i]["id"] in hopes) / len(HOPES_QS)
             alignment = round((claim_avg + hope_avg) / 2 * 100, 1)
+            # Save claims vs hopes to session state so Tab 4 and Results can use it
+            st.session_state["claims_vs_hopes_score"] = alignment
+            st.session_state["claims_avg"] = round(claim_avg * 100, 1)
+            st.session_state["hopes_avg"] = round(hope_avg * 100, 1)
             color = "#6BAF73" if alignment >= 70 else "#E8A846" if alignment >= 45 else "#D4577A"
             st.markdown(f"""
             <div style="background:white; border-radius:14px; padding:1.2rem; text-align:center;
@@ -730,56 +734,228 @@ def main():
                 <div style="font-size:0.85rem; color:#8A6B7A; margin-top:0.3rem;">How well {name_b}'s claims match {name_a}'s hopes</div>
             </div>
             """, unsafe_allow_html=True)
+            st.caption(f"✅ Saved — {name_b}'s honesty score: {round(claim_avg*100,1)}% · {name_a}'s expectations score: {round(hope_avg*100,1)}%")
 
     with tab4:
-        scores = {}
-        for mk, lbl in [("sara_mother", f"{name_a}'s Mother"),
-                        ("sara_father", f"{name_a}'s Father"),
-                        ("sara_brother", f"{name_a}'s Brother"),
-                        ("sara_sister", f"{name_a}'s Sister"),
-                        ("ahmed_mother", f"{name_b}'s Mother"),
-                        ("ahmed_father", f"{name_b}'s Father"),
-                        ("ahmed_brother", f"{name_b}'s Brother"),
-                        ("ahmed_sister", f"{name_b}'s Sister")]:
+        # ── Collect all raw member scores ──
+        member_map = [
+            ("sara_mother",   f"{name_a}'s Mother",  "girl_family", 0.40),
+            ("sara_father",   f"{name_a}'s Father",  "girl_family", 0.40),
+            ("sara_brother",  f"{name_a}'s Brother", "girl_family", 0.10),
+            ("sara_sister",   f"{name_a}'s Sister",  "girl_family", 0.10),
+            ("ahmed_mother",  f"{name_b}'s Mother",  "boy_family",  0.40),
+            ("ahmed_father",  f"{name_b}'s Father",  "boy_family",  0.40),
+            ("ahmed_brother", f"{name_b}'s Brother", "boy_family",  0.10),
+            ("ahmed_sister",  f"{name_b}'s Sister",  "boy_family",  0.10),
+        ]
+
+        girl_weighted_num, girl_weighted_den = 0.0, 0.0
+        boy_weighted_num,  boy_weighted_den  = 0.0, 0.0
+        girl_scores, boy_scores = {}, {}
+
+        for mk, lbl, side, weight in member_map:
             if f"il_{mk}" in st.session_state:
                 s = compute_score(st.session_state[f"il_{mk}"], mk)
                 if s is not None:
-                    scores[lbl] = s
+                    if side == "girl_family":
+                        girl_scores[lbl] = s
+                        girl_weighted_num += s * weight
+                        girl_weighted_den += weight
+                    else:
+                        boy_scores[lbl]  = s
+                        boy_weighted_num += s * weight
+                        boy_weighted_den += weight
 
-        if len(scores) >= 2:
-            c1, c2 = st.columns(2)
-            sara_s = {k: v for k, v in scores.items() if name_a in k}
-            ahmed_s = {k: v for k, v in scores.items() if name_b in k}
+        has_girl = girl_weighted_den > 0
+        has_boy  = boy_weighted_den  > 0
 
-            with c1:
-                st.markdown(f"**👰 {name_a}'s Family**")
-                for lbl, sc in sara_s.items():
+        if not has_girl and not has_boy:
+            st.info("Complete at least one family's assessment above to see the analysis here.")
+        else:
+            # ── Helper to render a score card ──
+            def score_card(title, subtitle, score, note=""):
+                color = "#6BAF73" if score >= 70 else "#E8A846" if score >= 45 else "#D4577A"
+                verdict = ("Strong ✓" if score >= 70
+                           else "Moderate ◐" if score >= 45
+                           else "Friction Risk ✗")
+                st.markdown(f"""
+                <div style="background:white; border-radius:16px; padding:1.4rem 1.6rem;
+                     border:1.5px solid {color}40; box-shadow:0 4px 16px {color}18;
+                     margin-bottom:1rem;">
+                    <div style="font-size:0.7rem; color:#8A6B7A; letter-spacing:2px;
+                         text-transform:uppercase; font-weight:600;">{title}</div>
+                    <div style="font-family:'Playfair Display',serif; font-size:2.6rem;
+                         font-weight:700; color:{color}; margin:0.1rem 0;">{score:.1f}%</div>
+                    <div style="color:{color}; font-weight:600; font-size:0.95rem;">{verdict}</div>
+                    <div style="color:#5A3A4A; font-size:0.85rem; margin-top:0.4rem;">{subtitle}</div>
+                    {f'<div style="color:#8A6B7A; font-size:0.78rem; margin-top:0.3rem; font-style:italic;">{note}</div>' if note else ''}
+                </div>
+                """, unsafe_allow_html=True)
+
+            def member_breakdown(member_scores, family_label):
+                for lbl, sc in member_scores.items():
                     color = "#6BAF73" if sc >= 70 else "#E8A846" if sc >= 45 else "#D4577A"
-                    st.markdown(f"<div style='display:flex;justify-content:space-between;background:white;border-radius:8px;padding:0.6rem 1rem;margin-bottom:0.4rem;border:1px solid #F8D7DE;'><span style='color:#3E3E3E;'>{lbl}</span><span style='font-weight:700;color:{color};'>{sc}%</span></div>", unsafe_allow_html=True)
+                    role = lbl.replace(family_label + "'s ", "")
+                    st.markdown(f"""
+                    <div style="display:flex; justify-content:space-between; align-items:center;
+                         background:#FDEEF2; border-radius:8px; padding:0.5rem 0.9rem;
+                         margin-bottom:0.3rem;">
+                        <span style="color:#5A3A4A; font-size:0.88rem;">{role}</span>
+                        <span style="font-weight:700; color:{color}; font-size:0.95rem;">{sc:.1f}%</span>
+                    </div>
+                    """, unsafe_allow_html=True)
 
-            with c2:
-                st.markdown(f"**🤵 {name_b}'s Family**")
-                for lbl, sc in ahmed_s.items():
-                    color = "#6BAF73" if sc >= 70 else "#E8A846" if sc >= 45 else "#D4577A"
-                    st.markdown(f"<div style='display:flex;justify-content:space-between;background:white;border-radius:8px;padding:0.6rem 1rem;margin-bottom:0.4rem;border:1px solid #F8D7DE;'><span style='color:#3E3E3E;'>{lbl}</span><span style='font-weight:700;color:{color};'>{sc}%</span></div>", unsafe_allow_html=True)
-
-            combined = round(sum(scores.values()) / len(scores), 1)
-            color = "#6BAF73" if combined >= 70 else "#E8A846" if combined >= 45 else "#D4577A"
-            verdict = "Strong Family Alignment" if combined >= 70 else "Moderate — Discuss Key Areas" if combined >= 45 else "Significant Friction — Open Conversations Needed"
-
-            st.markdown(f"""
-            <div class='verdict-card'>
-                <div style='color:#8A6B7A;font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;font-weight:600;'>Combined Family Score</div>
-                <div class='verdict-score' style='color:{color};'>{combined}%</div>
-                <div style='color:{color};font-family:"Playfair Display",serif;font-size:1.25rem;font-weight:600;'>{verdict}</div>
-                <div style='color:#8A6B7A;margin-top:0.5rem;font-size:0.85rem;'>Combined across {len(scores)} family members</div>
+            st.markdown("""
+            <div style="background:#1a0a0e; border-radius:12px; padding:1rem 1.4rem; margin-bottom:1.2rem;">
+                <div style="color:white; font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600;">
+                    Four-Perspective Family Analysis
+                </div>
+                <div style="color:#C9A96E; font-size:0.85rem; margin-top:0.2rem;">
+                    What each perspective means for the couple
+                </div>
             </div>
             """, unsafe_allow_html=True)
-            st.session_state["inlaw_score"] = combined
-            st.session_state["inlaws_complete"] = True
-            st.success("✅ Family scores saved! Go to Results Dashboard.")
-        else:
-            st.info("Complete Sara's and Ahmed's family assessments to see the final analysis here.")
+
+            # ── Perspective 1: Girl's family readiness ──
+            # ── Perspective 2: Boy's family fit for Sara ──
+            col1, col2 = st.columns(2)
+
+            with col1:
+                if has_girl:
+                    girl_score = round(girl_weighted_num / girl_weighted_den, 1)
+                    score_card(
+                        f"👰 {name_a}'s Family Readiness",
+                        f"How supportive is {name_a}'s own family of this marriage? "
+                        f"High score = they will back the couple. Low = expect friction from {name_a}'s side.",
+                        girl_score,
+                        note="Weighted: parents 40% each, siblings 10% each"
+                    )
+                    with st.expander("Member breakdown"):
+                        member_breakdown(girl_scores, name_a)
+                else:
+                    st.info(f"Complete {name_a}'s family tabs to see this score.")
+
+            with col2:
+                if has_boy:
+                    boy_score = round(boy_weighted_num / boy_weighted_den, 1)
+                    score_card(
+                        f"🤵 {name_b}'s Family Fit for {name_a}",
+                        f"How compatible is {name_b}'s family with what {name_a} needs? "
+                        f"High score = {name_b}'s family will give her autonomy, warmth, and respect.",
+                        boy_score,
+                        note="Weighted: parents 40% each, siblings 10% each"
+                    )
+                    with st.expander("Member breakdown"):
+                        member_breakdown(boy_scores, name_b)
+                else:
+                    st.info(f"Complete {name_b}'s family tabs to see this score.")
+
+            # ── Perspective 3: Claims vs Hopes ──
+            # ── Perspective 4: Cross-family dynamic ──
+            col3, col4 = st.columns(2)
+
+            claims_vs_hopes = st.session_state.get("claims_vs_hopes_score")
+            with col3:
+                if claims_vs_hopes is not None:
+                    score_card(
+                        f"🔍 {name_b}'s Honesty Score",
+                        f"How well do {name_b}'s claims about his family match {name_a}'s hopes? "
+                        f"Low score = {name_b} is painting a rosier picture than reality. "
+                        f"This is the most important trust signal in the questionnaire.",
+                        claims_vs_hopes,
+                        note=f"{name_b}'s claims: {st.session_state.get('claims_avg', '?')}% · "
+                             f"{name_a}'s hopes: {st.session_state.get('hopes_avg', '?')}%"
+                    )
+                else:
+                    st.markdown(f"""
+                    <div style="background:#FFF8E1; border:1px solid #F9A825; border-radius:12px;
+                         padding:1rem 1.2rem; color:#5D4037; font-size:0.9rem;">
+                        ⚠️ Complete the <b>Claims vs Hopes</b> tab (Tab 3) to see {name_b}'s honesty score.
+                        This is the most important perspective — don't skip it.
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            with col4:
+                if has_girl and has_boy:
+                    girl_score = round(girl_weighted_num / girl_weighted_den, 1)
+                    boy_score  = round(boy_weighted_num  / boy_weighted_den,  1)
+                    # Cross-family: how similar are the two families' values/attitudes
+                    cross = round((girl_score + boy_score) / 2, 1)
+                    gap   = abs(girl_score - boy_score)
+                    if gap > 25:
+                        cross_note = (f"⚠️ Gap of {gap:.0f}% between families — "
+                                      f"the two sets of parents may clash on expectations.")
+                    elif gap > 12:
+                        cross_note = (f"Mild gap of {gap:.0f}% — worth discussing family "
+                                      f"expectations early.")
+                    else:
+                        cross_note = f"Both families are closely aligned ({gap:.0f}% gap)."
+                    score_card(
+                        "🤝 Cross-Family Dynamic",
+                        f"How aligned are the two families with each other? "
+                        f"Reflects whether {name_a}'s parents and {name_b}'s parents "
+                        f"share similar values and expectations.",
+                        cross,
+                        note=cross_note
+                    )
+                else:
+                    st.info("Complete both families to see cross-family dynamic.")
+
+            # ── Final weighted ensemble and save ──
+            st.markdown("<div class='divider-gold'></div>", unsafe_allow_html=True)
+
+            available_scores = []
+            available_weights = []
+            if has_girl:
+                available_scores.append(round(girl_weighted_num / girl_weighted_den, 1))
+                available_weights.append(0.25)
+            if has_boy:
+                available_scores.append(round(boy_weighted_num / boy_weighted_den, 1))
+                available_weights.append(0.40)   # boy's family fit matters most for Sara
+            if claims_vs_hopes is not None:
+                available_scores.append(claims_vs_hopes)
+                available_weights.append(0.35)   # honesty signal is high weight
+
+            if available_scores:
+                # Normalise weights to sum to 1
+                total_w = sum(available_weights)
+                combined = round(
+                    sum(s * w for s, w in zip(available_scores, available_weights)) / total_w, 1
+                )
+                color   = "#6BAF73" if combined >= 70 else "#E8A846" if combined >= 45 else "#D4577A"
+                verdict = ("Strong Family Alignment"
+                           if combined >= 70 else
+                           "Moderate — Discuss Key Areas"
+                           if combined >= 45 else
+                           "Significant Friction — Open Conversations Needed")
+
+                components_filled = []
+                if has_girl:        components_filled.append(f"{name_a}'s family readiness")
+                if has_boy:         components_filled.append(f"{name_b}'s family fit")
+                if claims_vs_hopes: components_filled.append("claims vs hopes")
+
+                st.markdown(f"""
+                <div class='verdict-card'>
+                    <div style='color:#8A6B7A;font-size:0.8rem;letter-spacing:3px;
+                         text-transform:uppercase;font-weight:600;'>
+                         Combined Family Compatibility Score
+                    </div>
+                    <div class='verdict-score' style='color:{color};'>{combined}%</div>
+                    <div style='color:{color};font-family:"Playfair Display",serif;
+                         font-size:1.25rem;font-weight:600;'>{verdict}</div>
+                    <div style='color:#8A6B7A;margin-top:0.5rem;font-size:0.85rem;'>
+                        Based on: {" · ".join(components_filled)}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                # Save everything for Results Dashboard
+                st.session_state["inlaw_score"]         = combined
+                st.session_state["inlaw_girl_score"]    = round(girl_weighted_num / girl_weighted_den, 1) if has_girl else None
+                st.session_state["inlaw_boy_score"]     = round(boy_weighted_num  / boy_weighted_den,  1) if has_boy  else None
+                st.session_state["inlaw_honesty_score"] = claims_vs_hopes
+                st.session_state["inlaws_complete"]     = True
+                st.success("✅ Family scores saved! Go to Results Dashboard.")
 
 
 main()
