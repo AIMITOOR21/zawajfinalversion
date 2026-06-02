@@ -139,8 +139,29 @@ def page_css():
         box-shadow: 0 4px 16px rgba(107,175,115,0.3);
     }
 
+    /* Custom tab switcher styling */
+    div[data-testid="stRadio"][data-tab-switcher="true"] > div {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0 !important;
+        background: #F8E8EE;
+        border-radius: 12px;
+        padding: 4px;
+        margin-bottom: 1rem;
+    }
+    div[data-testid="stRadio"][data-tab-switcher="true"] > div > label {
+        flex: 1 !important;
+        text-align: center !important;
+        border-radius: 10px !important;
+        padding: 0.6rem 1rem !important;
+        border: none !important;
+        background: transparent !important;
+        cursor: pointer !important;
+        transition: all 0.2s ease !important;
+        margin: 0 !important;
+    }
+
     /* Hide black radio dot */
-    /* Hide radio dot */
     div[data-testid="stRadio"] > div > label > div:first-child {
         display: none !important;
     }
@@ -163,7 +184,6 @@ def page_css():
         background: #FFF0F4 !important;
         border-color: #D4577A !important;
     }
-    /* Force ALL text inside radio labels to be visible - covers all Streamlit versions */
     div[data-testid="stRadio"] > div > label *,
     div[data-testid="stRadio"] > div > label p,
     div[data-testid="stRadio"] > div > label span,
@@ -174,16 +194,41 @@ def page_css():
         line-height: 1.5 !important;
     }
 
-    .stTabs [data-baseweb="tab"] {
-        background: white; border-radius: 10px 10px 0 0;
-        padding: 0.55rem 1.3rem; color: #8A6B7A;
-        border: 1px solid #F8D7DE; border-bottom: none;
-        font-family: 'Poppins', sans-serif; font-weight: 500;
+    /* Tab switcher buttons */
+    .tab-btn-container {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 1.2rem;
+        background: #F8E8EE;
+        padding: 5px;
+        border-radius: 14px;
     }
-    .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #5C2A3E, #D4577A) !important;
-        color: white !important;
+    .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 0.6rem 1rem;
+        border-radius: 10px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
     }
+    .tab-btn-active {
+        background: linear-gradient(135deg, #5C2A3E, #D4577A);
+        color: white;
+        box-shadow: 0 3px 10px rgba(212,87,122,0.3);
+    }
+    .tab-btn-active-blue {
+        background: linear-gradient(135deg, #1A3C5B, #1A5C8B);
+        color: white;
+        box-shadow: 0 3px 10px rgba(26,92,139,0.3);
+    }
+    .tab-btn-inactive {
+        background: transparent;
+        color: #8A6B7A;
+    }
+
     .stProgress > div > div > div > div {
         background: linear-gradient(90deg, #D4577A, #C9A96E) !important;
     }
@@ -209,6 +254,68 @@ def page_css():
     """, unsafe_allow_html=True)
 
 
+def render_girl_section(scenarios_a, name_a, total):
+    done_a = len(st.session_state.responses_a)
+    st.progress(done_a / total if total else 0)
+    if done_a >= total:
+        st.markdown('<div class="complete-card">✨ All scenarios complete!</div>', unsafe_allow_html=True)
+    else:
+        for sc in scenarios_a:
+            sid = str(sc["id"])
+            if sid in st.session_state.responses_a:
+                continue
+            title = sc.get("title", sc.get("domain", "").replace("_", " ").title())
+            text = get_text(sc)
+            domain = sc.get("domain", "").replace("_", " ").upper()
+            st.markdown(f"""
+            <div class="scenario-card">
+                <div class="scenario-domain">{domain}</div>
+                <div class="scenario-title">{title}</div>
+                <div class="scenario-text">{text}</div>
+            </div>
+            """, unsafe_allow_html=True)
+            opts = [c["text"] for c in sc["choices"]]
+            sel = st.radio("Choose your answer:", opts, key=f"ra_{sid}", index=None)
+            if sel is not None:
+                chosen = dict(next(c for c in sc["choices"] if c["text"] == sel))
+                chosen["domain"] = sc["domain"]
+                st.session_state.responses_a[sid] = chosen
+                st.session_state.active_partner = "girl"  # stay on girl's tab
+                st.rerun()
+            break
+
+
+def render_boy_section(scenarios_b, name_b, total):
+    done_b = len(st.session_state.responses_b)
+    st.progress(done_b / total if total else 0)
+    if done_b >= total:
+        st.markdown('<div class="complete-card">✨ All scenarios complete!</div>', unsafe_allow_html=True)
+    else:
+        for sc in scenarios_b:
+            sid = str(sc["id"])
+            if sid in st.session_state.responses_b:
+                continue
+            title = sc.get("title", sc.get("domain", "").replace("_", " ").title())
+            text = get_text(sc)
+            domain = sc.get("domain", "").replace("_", " ").upper()
+            st.markdown(f"""
+            <div class="scenario-card-blue">
+                <div class="scenario-domain-blue">{domain}</div>
+                <div class="scenario-title">{title}</div>
+                <div class="scenario-text">{text}</div>
+            </div>
+            """, unsafe_allow_html=True)
+            opts = [c["text"] for c in sc["choices"]]
+            sel = st.radio("Choose your answer:", opts, key=f"rb_{sid}", index=None)
+            if sel is not None:
+                chosen = dict(next(c for c in sc["choices"] if c["text"] == sel))
+                chosen["domain"] = sc["domain"]
+                st.session_state.responses_b[sid] = chosen
+                st.session_state.active_partner = "boy"  # stay on boy's tab
+                st.rerun()
+            break
+
+
 def main():
     st.set_page_config(page_title="Zawaj — Assessment", page_icon="💑", layout="wide")
     page_css()
@@ -217,11 +324,17 @@ def main():
     st.markdown('<p class="page-sub">Scenario-based questions that reveal true values — not just stated ones</p>', unsafe_allow_html=True)
     st.markdown('<div class="divider-gold"></div>', unsafe_allow_html=True)
 
-    # Initialize name defaults in session state ONCE
+    # Initialize session state
     if "name_a" not in st.session_state:
         st.session_state["name_a"] = st.session_state.get("person_a_name", "Sara")
     if "name_b" not in st.session_state:
         st.session_state["name_b"] = st.session_state.get("person_b_name", "Ahmed")
+    if "active_partner" not in st.session_state:
+        st.session_state.active_partner = "girl"
+    if "responses_a" not in st.session_state:
+        st.session_state.responses_a = {}
+    if "responses_b" not in st.session_state:
+        st.session_state.responses_b = {}
 
     col1, col2 = st.columns(2)
     with col1:
@@ -237,10 +350,8 @@ def main():
     scenarios_b = load_scenarios("male")
     total = len(scenarios_a)
 
-    if "responses_a" not in st.session_state:
-        st.session_state.responses_a = {}
-    if "responses_b" not in st.session_state:
-        st.session_state.responses_b = {}
+    done_a = len(st.session_state.responses_a)
+    done_b = len(st.session_state.responses_b)
 
     # Demo buttons
     c1, c2, c3 = st.columns(3)
@@ -251,6 +362,7 @@ def main():
                 chosen = dict(sc["choices"][0])
                 chosen["domain"] = sc["domain"]
                 st.session_state.responses_a[sid] = chosen
+            st.session_state.active_partner = "girl"
             st.rerun()
     with c2:
         if st.button(f"⚡ Auto-fill {name_b}", key="autofill_b", use_container_width=True):
@@ -259,80 +371,37 @@ def main():
                 chosen = dict(sc["choices"][0])
                 chosen["domain"] = sc["domain"]
                 st.session_state.responses_b[sid] = chosen
+            st.session_state.active_partner = "boy"
             st.rerun()
     with c3:
         if st.button("🔄 Reset All", key="reset_all_p1", use_container_width=True):
             st.session_state.responses_a = {}
             st.session_state.responses_b = {}
+            st.session_state.active_partner = "girl"
             st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    done_a = len(st.session_state.responses_a)
-    done_b = len(st.session_state.responses_b)
+    # ── Custom tab switcher (replaces st.tabs) ──
+    col_a, col_b = st.columns(2)
+    with col_a:
+        girl_label = f"💐 {name_a} — {done_a}/{total}"
+        if st.button(girl_label, key="tab_btn_girl", use_container_width=True):
+            st.session_state.active_partner = "girl"
+            st.rerun()
+    with col_b:
+        boy_label = f"🌙 {name_b} — {done_b}/{total}"
+        if st.button(boy_label, key="tab_btn_boy", use_container_width=True):
+            st.session_state.active_partner = "boy"
+            st.rerun()
 
-    tab_a, tab_b = st.tabs([
-        f"💐 {name_a} — {done_a}/{total} completed",
-        f"🌙 {name_b} — {done_b}/{total} completed"
-    ])
-
-    # ── SARA ──
-    with tab_a:
-        st.progress(done_a / total if total else 0)
-        if done_a >= total:
-            st.markdown('<div class="complete-card">✨ All scenarios complete!</div>', unsafe_allow_html=True)
-        else:
-            for sc in scenarios_a:
-                sid = str(sc["id"])
-                if sid in st.session_state.responses_a:
-                    continue
-                title = sc.get("title", sc.get("domain", "").replace("_", " ").title())
-                text = get_text(sc)
-                domain = sc.get("domain", "").replace("_", " ").upper()
-                st.markdown(f"""
-                <div class="scenario-card">
-                    <div class="scenario-domain">{domain}</div>
-                    <div class="scenario-title">{title}</div>
-                    <div class="scenario-text">{text}</div>
-                </div>
-                """, unsafe_allow_html=True)
-                opts = [c["text"] for c in sc["choices"]]
-                sel = st.radio("Choose your answer:", opts, key=f"ra_{sid}", index=None)
-                if sel is not None:
-                    chosen = dict(next(c for c in sc["choices"] if c["text"] == sel))
-                    chosen["domain"] = sc["domain"]
-                    st.session_state.responses_a[sid] = chosen
-                    st.rerun()
-                break
-
-    # ── AHMED ──
-    with tab_b:
-        st.progress(done_b / total if total else 0)
-        if done_b >= total:
-            st.markdown('<div class="complete-card">✨ All scenarios complete!</div>', unsafe_allow_html=True)
-        else:
-            for sc in scenarios_b:
-                sid = str(sc["id"])
-                if sid in st.session_state.responses_b:
-                    continue
-                title = sc.get("title", sc.get("domain", "").replace("_", " ").title())
-                text = get_text(sc)
-                domain = sc.get("domain", "").replace("_", " ").upper()
-                st.markdown(f"""
-                <div class="scenario-card-blue">
-                    <div class="scenario-domain-blue">{domain}</div>
-                    <div class="scenario-title">{title}</div>
-                    <div class="scenario-text">{text}</div>
-                </div>
-                """, unsafe_allow_html=True)
-                opts = [c["text"] for c in sc["choices"]]
-                sel = st.radio("Choose your answer:", opts, key=f"rb_{sid}", index=None)
-                if sel is not None:
-                    chosen = dict(next(c for c in sc["choices"] if c["text"] == sel))
-                    chosen["domain"] = sc["domain"]
-                    st.session_state.responses_b[sid] = chosen
-                    st.rerun()
-                break
+    # Show which tab is active
+    if st.session_state.active_partner == "girl":
+        st.markdown(f"**Answering as: 💐 {name_a}**")
+        render_girl_section(scenarios_a, name_a, total)
+    else:
+        st.markdown(f"**Answering as: 🌙 {name_b}**")
+        render_boy_section(scenarios_b, name_b, total)
 
     # ── SAVE ──
     if done_a >= total and done_b >= total:
