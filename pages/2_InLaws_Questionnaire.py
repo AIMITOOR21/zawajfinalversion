@@ -317,35 +317,46 @@ def page_css():
     }
     .q-text { color: #5C2A3E; font-size: 1rem; font-weight: 500; }
 
-    /* Fix expander arrow showing as text */
-    [data-testid="stExpander"] summary svg {
-        display: inline-block !important;
-        visibility: visible !important;
-    }
-    /* Fix expander */
+    /* Expander — clean layout, no overlap */
     [data-testid="stExpander"] {
         background: white !important;
         border: 1px solid #F8D7DE !important;
         border-radius: 12px !important;
-        margin: 0.8rem 0 !important;
+        margin: 0.6rem 0 !important;
+        overflow: hidden !important;
     }
     [data-testid="stExpander"] summary {
         background: white !important;
-        padding: 0.8rem 1rem !important;
+        padding: 0.7rem 1rem !important;
         border-radius: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        list-style: none !important;
+        cursor: pointer !important;
+    }
+    /* Hide default marker/arrow text artifact */
+    [data-testid="stExpander"] summary::-webkit-details-marker { display: none !important; }
+    [data-testid="stExpander"] summary::marker { display: none !important; }
+    [data-testid="stExpander"] summary svg {
+        flex-shrink: 0 !important;
+        width: 16px !important;
+        height: 16px !important;
+        color: #D4577A !important;
     }
     [data-testid="stExpander"] summary p,
-    [data-testid="stExpander"] summary span {
+    [data-testid="stExpander"] summary span,
+    [data-testid="stExpander"] summary div {
         color: #5C2A3E !important;
         font-weight: 600 !important;
         font-family: 'Poppins', sans-serif !important;
-        font-size: 0.95rem !important;
+        font-size: 0.88rem !important;
+        line-height: 1.3 !important;
     }
     [data-testid="stExpander"] > div {
         background: white !important;
-        padding: 0.5rem 0.8rem 1rem !important;
+        padding: 0.4rem 1rem 0.9rem !important;
     }
-    /* Fix ALL text inside expander */
     [data-testid="stExpander"] p,
     [data-testid="stExpander"] span,
     [data-testid="stExpander"] label {
