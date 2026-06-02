@@ -317,53 +317,6 @@ def page_css():
     }
     .q-text { color: #5C2A3E; font-size: 1rem; font-weight: 500; }
 
-    /* Expander — clean layout, no overlap */
-    [data-testid="stExpander"] {
-        background: white !important;
-        border: 1px solid #F8D7DE !important;
-        border-radius: 12px !important;
-        margin: 0.6rem 0 !important;
-        overflow: hidden !important;
-    }
-    [data-testid="stExpander"] summary {
-        background: white !important;
-        padding: 0.7rem 1rem !important;
-        border-radius: 12px !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 0.5rem !important;
-        list-style: none !important;
-        cursor: pointer !important;
-    }
-    /* Hide default marker/arrow text artifact */
-    [data-testid="stExpander"] summary::-webkit-details-marker { display: none !important; }
-    [data-testid="stExpander"] summary::marker { display: none !important; }
-    [data-testid="stExpander"] summary svg {
-        flex-shrink: 0 !important;
-        width: 16px !important;
-        height: 16px !important;
-        color: #D4577A !important;
-    }
-    [data-testid="stExpander"] summary p,
-    [data-testid="stExpander"] summary span,
-    [data-testid="stExpander"] summary div {
-        color: #5C2A3E !important;
-        font-weight: 600 !important;
-        font-family: 'Poppins', sans-serif !important;
-        font-size: 0.88rem !important;
-        line-height: 1.3 !important;
-    }
-    [data-testid="stExpander"] > div {
-        background: white !important;
-        padding: 0.4rem 1rem 0.9rem !important;
-    }
-    [data-testid="stExpander"] p,
-    [data-testid="stExpander"] span,
-    [data-testid="stExpander"] label {
-        color: #3E3E3E !important;
-        font-family: 'Poppins', sans-serif !important;
-    }
-
     /* Buttons */
     .stButton > button {
         border-radius: 24px !important;
@@ -841,7 +794,12 @@ def main():
                         girl_score,
                         note="Weighted: parents 40% each, siblings 10% each"
                     )
-                    with st.expander("Member breakdown"):
+                    if "show_girl_breakdown" not in st.session_state:
+                        st.session_state.show_girl_breakdown = False
+                    if st.button("▾ Member breakdown" if st.session_state.show_girl_breakdown else "▸ Member breakdown", key="toggle_girl_bd"):
+                        st.session_state.show_girl_breakdown = not st.session_state.show_girl_breakdown
+                        st.rerun()
+                    if st.session_state.show_girl_breakdown:
                         member_breakdown(girl_scores, name_a)
                 else:
                     st.info(f"Complete {name_a}'s family tabs to see this score.")
@@ -856,7 +814,12 @@ def main():
                         boy_score,
                         note="Weighted: parents 40% each, siblings 10% each"
                     )
-                    with st.expander("Member breakdown"):
+                    if "show_boy_breakdown" not in st.session_state:
+                        st.session_state.show_boy_breakdown = False
+                    if st.button("▾ Member breakdown" if st.session_state.show_boy_breakdown else "▸ Member breakdown", key="toggle_boy_bd"):
+                        st.session_state.show_boy_breakdown = not st.session_state.show_boy_breakdown
+                        st.rerun()
+                    if st.session_state.show_boy_breakdown:
                         member_breakdown(boy_scores, name_b)
                 else:
                     st.info(f"Complete {name_b}'s family tabs to see this score.")
