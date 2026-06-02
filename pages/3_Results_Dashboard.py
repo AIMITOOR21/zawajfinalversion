@@ -290,7 +290,7 @@ def main():
         fig_ens = create_ensemble_breakdown(results["breakdown"])
         st.plotly_chart(fig_ens, use_container_width=True)
 
-        # Metric tiles
+        # Metric tiles — top row
         m1, m2, m3 = st.columns(3)
         with m1:
             st.markdown(f"""
@@ -303,7 +303,7 @@ def main():
             extra = " ⓘ" if inlaw_pending else ""
             st.markdown(f"""
             <div class='metric-tile'>
-                <div class='label'>In-Law Alignment{extra}</div>
+                <div class='label'>Family Score{extra}</div>
                 <div class='value'>{inlaw_score:.1f}%</div>
             </div>
             """, unsafe_allow_html=True)
@@ -315,8 +315,28 @@ def main():
             </div>
             """, unsafe_allow_html=True)
 
-        if inlaw_pending:
-            st.caption("⚠️ In-Law Alignment is a placeholder (55%). Complete the In-Laws Questionnaire for your real score.")
+        # In-law 4-perspective breakdown
+        inlaw_girl  = st.session_state.get("inlaw_girl_score")
+        inlaw_boy   = st.session_state.get("inlaw_boy_score")
+        inlaw_hon   = st.session_state.get("inlaw_honesty_score")
+
+        if not inlaw_pending and any(x is not None for x in [inlaw_girl, inlaw_boy, inlaw_hon]):
+            st.markdown("<div style='margin-top:0.8rem;'></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-size:0.75rem;color:#8A6B7A;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:0.5rem;'>Family Score Breakdown</div>", unsafe_allow_html=True)
+            p1, p2, p3 = st.columns(3)
+            def mini_tile(label, val, pending_msg):
+                if val is not None:
+                    c = "#6BAF73" if val >= 70 else "#E8A846" if val >= 45 else "#D4577A"
+                    return f"<div class='metric-tile' style='border-top-color:{c};'><div class='label'>{label}</div><div class='value' style='color:{c};font-size:1.4rem;'>{val:.1f}%</div></div>"
+                return f"<div class='metric-tile'><div class='label'>{label}</div><div style='font-size:0.78rem;color:#8A6B7A;margin-top:0.3rem;'>{pending_msg}</div></div>"
+            with p1:
+                st.markdown(mini_tile(f"{name_a}'s Family Readiness", inlaw_girl, "Complete Tab 1"), unsafe_allow_html=True)
+            with p2:
+                st.markdown(mini_tile(f"{name_b}'s Family Fit", inlaw_boy, "Complete Tab 2"), unsafe_allow_html=True)
+            with p3:
+                st.markdown(mini_tile(f"{name_b}'s Honesty Score", inlaw_hon, "Complete Tab 3"), unsafe_allow_html=True)
+        elif inlaw_pending:
+            st.caption("⚠️ Family Score is a placeholder (55%). Complete the In-Laws Questionnaire for your real score.")
 
     st.markdown("<div class='section-title'>Domain Compatibility</div>", unsafe_allow_html=True)
 
